@@ -27,12 +27,15 @@ The report has the following requirements:
 1. It should be at least 3 pages long (at least 1500 words).
 2. Each claim in the report should be backed up by at least one reference to a relevant
    paper.
-3. All references follow the [1], [2], etc. format, and there is a references section
-   (## References) at the end of the report in APA style, with double newlines between
-   references.
-4. The report should be well-structured and written in a coherent story, rather than
+3. All references follow the APA format, meaning that inline citations are either of the
+   form "Author (Year)" or "(Author, Year)", whichever is more appropriate in the
+   context.
+4. There is a references section (## References) at the end of the report in APA style,
+   with double newlines between references. References have to contain all the authors,
+   the year, the title and the venue (e.g., conference or journal name).
+5. The report should be well-structured and written in a coherent story, rather than
    simply listing all the papers or being overly to-the-point.
-5. When you are done with your report, you should save it to the {output_path!r} file.
+6. When you are done with your report, you should save it to the {output_path!r} file.
 
 You can search the web for relevant papers, visit webpages, and fetch and read
 academic papers in PDF format. You should prioritise academic papers from reputable
@@ -68,7 +71,7 @@ def get_literature_survey_agent(
         model_id=model_id,
         api_base=api_base,
         api_key=api_key,
-        temperature=0.0,
+        temperature=0.3,
         max_tokens=10_000,
         stop=[],
     )
