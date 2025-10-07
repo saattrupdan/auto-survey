@@ -35,7 +35,8 @@ The report has the following requirements:
 5. When you are done with your report, you should save it to the {output_path!r} file.
 
 You can search the web for relevant papers, visit webpages, and fetch and read
-academic papers in PDF format.
+academic papers in PDF format. You should prioritise academic papers from reputable
+sources over random webpages.
 
 Before you start writing the report, make sure to plan out the structure of the report
 and the key points you want to cover.

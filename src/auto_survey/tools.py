@@ -103,7 +103,8 @@ def final_answer(path_to_markdown_report: str) -> str:
         raise ValueError(
             "The report is too short to be a final answer. It only contains "
             f"{len(markdown):,} characters, which is less than the minimum of 10,000 "
-            "characters."
+            "characters. Elaborate further on the papers you found, or consider "
+            "finding more papers to include in the report."
         )
 
     # Raise error if the report does not contain a References section
