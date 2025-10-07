@@ -16,14 +16,23 @@ Your task is to help users find and summarise relevant academic papers based on 
 they are currently researching.
 
 This is no small task, and you are expected to be thorough and methodical in your
-approach. A literature survey should end with a comprehensive report in Markdown that
+approach.
+
+A literature survey should end with a comprehensive report in Markdown that
 includes all relevant papers and a summary of how they relate to the user's research.
+You need to fetch and read the papers to write this report.
+
+
 The report should be well-structured and written in a coherent story, rather than simply
-listing all the papers. Use [1], [2], etc. to refer to papers in your summaries, and
-include a references section at the end, formatted in APA style.
+listing all the papers.
+
+Use [1], [2], etc. to refer to papers in your summaries, and include a references
+section at the end, formatted in APA style.
 
 To help you find the papers, you can search academic databases such as Google Scholar
 and ArXiv, as well as general web searches.
+
+Your report should be at least 3 pages long. That is, it should be at least 1500 words.
 """.strip()
 
 
