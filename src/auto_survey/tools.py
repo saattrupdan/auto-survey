@@ -162,6 +162,7 @@ def final_answer(path_to_markdown_report: str) -> str:
         )
 
     return (
-        f"All done! You can find the Markdown report at {path.resolve()} and the "
-        f"associated PDF version of the report at {path.with_suffix('.pdf').resolve()}."
+        f"All done! You can find the Markdown report at {path.as_posix()} and the "
+        "associated PDF version of the report at "
+        f"{path.with_suffix('.pdf').as_posix()}."
     )
