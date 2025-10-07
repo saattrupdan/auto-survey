@@ -1,10 +1,12 @@
 """Tools to use during agent execution."""
 
 import logging
+import os
 import re
 import subprocess
 from pathlib import Path
 
+import httpx
 from docling.document_converter import DocumentConverter
 from smolagents import tool
 
@@ -25,10 +27,19 @@ def parse_website(url: str) -> str:
         The content of the website converted to Markdown.
 
     Raises:
-        RuntimeError:
-            If the website could not be fetched or parsed.
+        httpx.HTTPStatusError:
+            If the website returns a non-200 status code.
     """
-    result = DocumentConverter().convert(source=url)
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) Gecko/20100101 "
+            "Firefox/143.0"
+        )
+    }
+    response = httpx.get(url=url, headers=headers)
+    response.raise_for_status()
+    content = response.content.decode("utf-8", errors="ignore")
+    result = DocumentConverter().convert(source=content)
     markdown = result.document.export_to_markdown()
     return markdown
 
@@ -206,8 +217,37 @@ def count_characters(text: str) -> int:
     return len(text)
 
 
-# TODO: Consider Semantic Scholar API tool
-# Search API: https://api.semanticscholar.org/graph/v1/paper/search?limit=NUM_RESULTS&query=QUERY
-#   - This API gives a list of paper IDs
-# Paper API: https://api.semanticscholar.org/graph/v1/paper/PAPER_ID?fields=url,year,authors
-#   - This API gives the title, URL, year and author IDs of a paper given its paper ID
+@tool
+def find_papers(query: str, num_results: int) -> list[dict]:
+    """Find academic papers related to a query.
+
+    Args:
+        query:
+            The query to search for.
+        num_results:
+            The number of results to return.
+
+    Returns:
+        A list of dictionaries containing the title, URL, year and authors of the
+        papers found.
+
+    Raises:
+        httpx.HTTPStatusError:
+            If the API returns a non-200 status code.
+    """
+    response = httpx.get(
+        url="https://api.semanticscholar.org/graph/v1/paper/search",
+        params=dict(
+            query=query, limit=num_results, fields="title,url,year,authors,abstract"
+        ),
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) "
+                "Gecko/20100101 Firefox/143.0"
+            ),
+            "x-api-key": os.getenv("SEMANTIC_SCHOLAR_API_KEY", ""),
+        },
+    )
+    response.raise_for_status()
+    results = response.json().get("data", [])
+    return results

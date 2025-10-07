@@ -9,6 +9,7 @@ from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel
 from auto_survey.tools import (
     count_characters,
     final_answer,
+    find_papers,
     load_markdown_document_from_file,
     parse_website,
     write_markdown_document_to_file,
@@ -44,14 +45,15 @@ The report has the following requirements:
    appear in the References section.
 6. The report should be well-structured and written in a coherent story, rather than
    simply listing all the papers or being overly to-the-point.
-7. Write the individual sections of the report separately, to avoid having to re-write
-   the entire report later on.
-8. When you are done with your report, you should save it to the {output_path!r} file.
+7. When you are done with your report, you should save it to the {output_path!r} file.
    Use your tool to save the report, do not write the file directly yourself.
 
-You can search the web for relevant papers, visit webpages, and fetch and read
-academic papers in PDF format. You should prioritise academic papers from reputable
-sources over random webpages.
+Use your tools to find academic papers that are relevant to the user's request.
+
+You can also search the web for relevant webpages to complement the academic papers.
+Note that you can limit your search to a specific site with the "site:" operator, e.g.,
+"<query> site:scholar.google.com", "<query> site:arxiv.org", "<query> site:biorxiv.org"
+and so on.
 
 Before you start writing the report, make sure to plan out the structure of the report
 and the key points you want to cover.
@@ -92,7 +94,7 @@ def get_literature_survey_agent(
         instructions=LITERATURE_SURVEY_AGENT_SYSTEM_PROMPT.format(
             output_path=output_path.as_posix(), today_date=dt.date.today().isoformat()
         ),
-        max_print_outputs_length=10_000,
+        max_print_outputs_length=100_000,
         stream_outputs=True,
         code_block_tags="markdown",
         additional_authorized_imports=[
@@ -104,6 +106,7 @@ def get_literature_survey_agent(
             "numpy",
         ],
         tools=[
+            find_papers,
             parse_website,
             write_markdown_document_to_file,
             load_markdown_document_from_file,
