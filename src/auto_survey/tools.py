@@ -21,14 +21,9 @@ def fetch_pdf_as_markdown(pdf_url: str) -> str:
         The content of the PDF converted to Markdown.
 
     Raises:
-        ValueError:
-            If the URL does not end with .pdf.
         RuntimeError:
             If the PDF could not be parsed.
     """
-    if not pdf_url.endswith(".pdf"):
-        raise ValueError("The URL must end with .pdf")
-
     parsed_pdf = pdf_parser.from_file(pdf_url, service="text")
     if not isinstance(parsed_pdf, dict):
         raise RuntimeError(
