@@ -1,6 +1,7 @@
 """Tools to use during agent execution."""
 
 import logging
+import re
 import subprocess
 from pathlib import Path
 
@@ -91,9 +92,12 @@ def final_answer(path_to_markdown_report: str) -> str:
     Returns:
         A message indicating that the final answer was provided.
     """
+    # Raise error if the file does not exist
     path = Path(path_to_markdown_report)
     if not path.exists():
         raise FileNotFoundError(f"The file {path_to_markdown_report} does not exist.")
+
+    # Raise error if the report is too short
     markdown = path.read_text(encoding="utf-8")
     if len(markdown) < 10_000:
         raise ValueError(
@@ -101,6 +105,22 @@ def final_answer(path_to_markdown_report: str) -> str:
             f"{len(markdown):,} characters, which is less than the minimum of 10,000 "
             "characters."
         )
+
+    # Raise error if the report does not contain a References section
+    if "## References" not in markdown:
+        raise ValueError(
+            "The report does not contain a References section. Please ensure that the "
+            "report includes a References section, starting with '## References'."
+        )
+
+    # Ensure that there are double newlines between references in the References section
+    references_section = markdown.split("## References")[-1]
+    references_section = re.sub(r"\n+", "\n\n", references_section.strip())
+    markdown = (
+        markdown.split("## References")[0]
+        + "\n\n## References\n\n"
+        + references_section
+    )
 
     # Convert the Markdown file to a PDF file, if dependencies are installed
     pandoc_installed = (

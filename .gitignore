@@ -116,3 +116,6 @@ site/
 
 # Reports
 auto_survey_reports/
+
+# Gradio
+.gradio/
