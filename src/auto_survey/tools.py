@@ -188,3 +188,17 @@ def final_answer(path_to_markdown_report: str) -> str:
         "associated PDF version of the report at "
         f"{path.with_suffix('.pdf').as_posix()}."
     )
+
+
+@tool
+def count_characters(text: str) -> int:
+    """Count the number of characters in a text.
+
+    Args:
+        text:
+            The text to count the characters in.
+
+    Returns:
+        The number of characters in the text.
+    """
+    return len(text)

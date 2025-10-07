@@ -7,6 +7,7 @@ from pathlib import Path
 from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, VisitWebpageTool
 
 from auto_survey.tools import (
+    count_characters,
     fetch_pdf_as_markdown,
     final_answer,
     load_markdown_document_from_file,
@@ -44,6 +45,7 @@ The report has the following requirements:
 6. The report should be well-structured and written in a coherent story, rather than
    simply listing all the papers or being overly to-the-point.
 7. When you are done with your report, you should save it to the {output_path!r} file.
+   Use your tool to save the report, do not write the file directly yourself.
 
 You can search the web for relevant papers, visit webpages, and fetch and read
 academic papers in PDF format. You should prioritise academic papers from reputable
@@ -103,7 +105,8 @@ def get_literature_survey_agent(
             fetch_pdf_as_markdown,
             write_markdown_document_to_file,
             load_markdown_document_from_file,
-            DuckDuckGoSearchTool(max_results=10, rate_limit=1),
+            count_characters,
+            DuckDuckGoSearchTool(max_results=100, rate_limit=1),
             VisitWebpageTool(max_output_length=40_000),
             final_answer,
         ],
