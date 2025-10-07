@@ -77,3 +77,17 @@ def load_markdown_document_from_file(file_path: str) -> str:
     if not path.exists():
         raise FileNotFoundError(f"The file {file_path} does not exist.")
     return path.read_text(encoding="utf-8")
+
+
+@tool
+def final_answer(answer: str) -> str:
+    """Provide the final answer to the user.
+
+    Args:
+        answer:
+            The final answer to provide to the user.
+
+    Returns:
+        A message indicating that the final answer was provided.
+    """
+    return answer

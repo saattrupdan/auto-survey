@@ -7,6 +7,7 @@ from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, VisitWebpa
 
 from auto_survey.tools import (
     fetch_pdf_as_markdown,
+    final_answer,
     load_markdown_document_from_file,
     write_markdown_document_to_file,
 )
@@ -32,7 +33,8 @@ The report should be well-structured and written in a coherent story, rather tha
 listing all the papers.
 
 Use [1], [2], etc. to refer to papers in your summaries, and include a references
-section at the end, formatted in APA style.
+section at the end, formatted in APA style. References in the references section should
+be separated by two newlines.
 
 To help you find the papers, you can search academic databases such as Google Scholar
 and ArXiv, as well as general web searches.
@@ -93,6 +95,7 @@ def get_literature_survey_agent(
             load_markdown_document_from_file,
             DuckDuckGoSearchTool(max_results=10, rate_limit=1),
             VisitWebpageTool(max_output_length=40_000),
+            final_answer,
         ],
         max_steps=1000,
     )
