@@ -7,7 +7,6 @@ from pathlib import Path
 from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel
 
 from auto_survey.tools import (
-    count_words,
     final_answer,
     find_papers,
     load_markdown_document_from_file,
@@ -27,7 +26,8 @@ format.
 
 The report has the following requirements:
 
-1. It should be at least 5 pages long (at least 2,500 words).
+1. It should be at least 3 pages long (at least 1,500 words). This does not include the
+   references section.
 2. It must contain data from at least 10 academic papers.
 3. All references follow the APA format, meaning that inline citations are either of the
    form "Author (Year)" or "(Author, Year)", whichever is more appropriate in the
@@ -48,7 +48,9 @@ The report has the following requirements:
 7. When you are done with your report, you should save it to the {output_path!r} file.
    Use your tool to save the report, do not write the file directly yourself.
 
-Use your tools to find academic papers that are relevant to the user's request.
+Use your tools to find academic papers that are relevant to the user's request. Remember
+to also read the relevant papers that you find, and extract the key information from
+them to include in the report.
 
 You can also search the web for relevant webpages to complement the academic papers.
 Note that you can limit your search to a specific site with the "site:" operator, e.g.,
@@ -110,7 +112,6 @@ def get_literature_survey_agent(
             parse_website,
             write_markdown_document_to_file,
             load_markdown_document_from_file,
-            count_words,
             DuckDuckGoSearchTool(max_results=100, rate_limit=1),
             final_answer,
         ],

@@ -4,6 +4,8 @@ import logging
 import os
 import re
 import subprocess
+import tempfile
+import time
 from pathlib import Path
 
 import httpx
@@ -38,8 +40,10 @@ def parse_website(url: str) -> str:
     }
     response = httpx.get(url=url, headers=headers)
     response.raise_for_status()
-    content = response.content.decode("utf-8", errors="ignore")
-    result = DocumentConverter().convert(source=content)
+    with tempfile.NamedTemporaryFile(mode="w+b") as temp_file:
+        temp_file.write(response.content)
+        temp_file.flush()
+        result = DocumentConverter().convert(source=temp_file.name)
     markdown = result.document.export_to_markdown()
     return markdown
 
@@ -119,13 +123,14 @@ def final_answer(path_to_markdown_report: str) -> str:
 
     # Raise error if the report is too short
     markdown = path.read_text(encoding="utf-8")
-    num_words = len(re.findall(r"\b\w+\b", markdown))
+    markdown_without_references = markdown.split("## References")[0]
+    num_words = len(re.findall(r"\b\w+\b", markdown_without_references))
     if num_words < 1_500:
         raise ValueError(
             "The report is too short to be a final answer. It only contains "
-            f"{num_words} words. Please expand the report to at least 2,500 words, "
-            "e.g., by adding more details to your sections and/or finding more papers "
-            "to include in the report."
+            f"{num_words} words, excluding references. Please expand the report to at "
+            "least 1,500 words (without references), e.g., by adding more details to "
+            "your sections and/or finding more papers to include in the report."
         )
 
     # Raise error if the report does not contain a References section
@@ -205,21 +210,6 @@ def final_answer(path_to_markdown_report: str) -> str:
 
 
 @tool
-def count_words(text: str) -> int:
-    """Count the number of words in a text.
-
-    Args:
-        text:
-            The text to count the words in.
-
-    Returns:
-        The number of words in the text.
-    """
-    words = re.findall(r"\b\w+\b", text)
-    return len(words)
-
-
-@tool
 def find_papers(query: str, num_results: int) -> list[dict]:
     """Find academic papers related to a query.
 
@@ -237,19 +227,31 @@ def find_papers(query: str, num_results: int) -> list[dict]:
         httpx.HTTPStatusError:
             If the API returns a non-200 status code.
     """
-    response = httpx.get(
-        url="https://api.semanticscholar.org/graph/v1/paper/search",
-        params=dict(
-            query=query, limit=num_results, fields="title,url,year,authors,abstract"
-        ),
-        headers={
-            "User-Agent": (
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) "
-                "Gecko/20100101 Firefox/143.0"
+    while True:
+        response = httpx.get(
+            url="https://api.semanticscholar.org/graph/v1/paper/search",
+            params=dict(
+                query=query,
+                limit=num_results,
+                fields="title,url,year,authors,abstract,openAccessPdf",
             ),
-            "x-api-key": os.getenv("SEMANTIC_SCHOLAR_API_KEY", ""),
-        },
-    )
+            headers={
+                "User-Agent": (
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:143.0) "
+                    "Gecko/20100101 Firefox/143.0"
+                ),
+                "x-api-key": os.getenv("SEMANTIC_SCHOLAR_API_KEY", ""),
+            },
+            timeout=30,
+        )
+        if response.status_code == 429:
+            logger.warning(
+                "Rate limit exceeded when querying Semantic Scholar API. "
+                "Waiting 10 seconds before retrying..."
+            )
+            time.sleep(10)
+            continue
+        break
     response.raise_for_status()
     results = response.json().get("data", [])
     return results
