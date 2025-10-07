@@ -113,3 +113,6 @@ models/*
 
 # Mkdocs compiled documentation
 site/
+
+# Reports
+auto_survey_reports/

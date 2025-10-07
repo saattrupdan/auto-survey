@@ -6,7 +6,7 @@ from pathlib import Path
 from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, VisitWebpageTool
 
 from auto_survey.tools import (
-    get_search_google_scholar_tool,
+    fetch_pdf_as_markdown,
     load_markdown_document_from_file,
     write_markdown_document_to_file,
 )
@@ -88,7 +88,7 @@ def get_literature_survey_agent(
             "numpy",
         ],
         tools=[
-            get_search_google_scholar_tool(),
+            fetch_pdf_as_markdown,
             write_markdown_document_to_file,
             load_markdown_document_from_file,
             DuckDuckGoSearchTool(max_results=10, rate_limit=1),

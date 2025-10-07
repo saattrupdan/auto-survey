@@ -3,57 +3,41 @@
 import logging
 from pathlib import Path
 
-from scholarly import ProxyGenerator, scholarly
-from smolagents import Tool, tool
+from smolagents import tool
+from tika import parser as pdf_parser
 
 logger = logging.getLogger("auto_survey")
 
 
-def get_search_google_scholar_tool() -> Tool:
-    """Get the Google Scholar search tool.
+@tool
+def fetch_pdf_as_markdown(pdf_url: str) -> str:
+    """Fetch a PDF from a URL and convert it to Markdown.
+
+    Args:
+        pdf_url:
+            The URL of the PDF to fetch.
 
     Returns:
-        The Google Scholar search tool.
+        The content of the PDF converted to Markdown.
+
+    Raises:
+        ValueError:
+            If the URL does not end with .pdf.
+        RuntimeError:
+            If the PDF could not be parsed.
     """
-    # Set up a free proxy to avoid rate limiting
-    logger.info("Setting up a proxy for searching Google Scholar...")
-    proxy_generator = ProxyGenerator()
-    proxy_generator.FreeProxies(timeout=1, wait_time=120)
-    scholarly.use_proxy(proxy_generator=proxy_generator)
-    logger.info("Proxy set up successfully.")
+    if not pdf_url.endswith(".pdf"):
+        raise ValueError("The URL must end with .pdf")
 
-    @tool
-    def search_google_scholar(
-        query: str, year_low: int | None, year_high: int | None, num_results: int
-    ) -> list[dict]:
-        """Search Google Scholar for academic papers.
-
-        Args:
-            query:
-                The search query.
-            year_low:
-                The lower bound of the publication year. Can be None to not have any
-                lower bound.
-            year_high:
-                The upper bound of the publication year. Can be None to not have any
-                upper bound.
-            num_results:
-                The number of results to return.
-
-        Returns:
-            A list of dictionaries containing the search results.
-        """
-        search_result_iterator = scholarly.search_pubs(
-            query=query,
-            year_low=year_low,  #  type: ignore
-            year_high=year_high,  # type: ignore
+    parsed_pdf = pdf_parser.from_file(pdf_url, service="text")
+    if not isinstance(parsed_pdf, dict):
+        raise RuntimeError(
+            f"Failed to parse the PDF, received {parsed_pdf} instead of a dict."
         )
-        search_results = [
-            dict(next(search_result_iterator)) for _ in range(num_results)
-        ]
-        return search_results
-
-    return search_google_scholar
+    pdf_content = parsed_pdf["content"]
+    if pdf_content is None:
+        raise RuntimeError("Failed to extract content from the PDF, as it was None.")
+    return pdf_content
 
 
 @tool

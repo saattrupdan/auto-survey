@@ -22,6 +22,7 @@ dependencies = [
     "scholarly>=1.7.11",
     "smolagents>=1.22.0",
     "termcolor>=3.1.0",
+    "tika>=3.1.0",
 ]
 
 [project.urls]
