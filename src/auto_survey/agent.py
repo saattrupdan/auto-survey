@@ -32,7 +32,8 @@ The report has the following requirements:
    context.
 4. There is a references section (## References) at the end of the report in APA style,
    with double newlines between references. References have to contain all the authors,
-   the year, the title and the venue (e.g., conference or journal name).
+   the year, the title, the venue (e.g., conference or journal name), and a link to the
+    paper (prefer DOI links where possible).
 5. The report should be well-structured and written in a coherent story, rather than
    simply listing all the papers or being overly to-the-point.
 6. When you are done with your report, you should save it to the {output_path!r} file.
