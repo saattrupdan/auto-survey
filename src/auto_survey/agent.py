@@ -4,13 +4,13 @@ import datetime as dt
 import logging
 from pathlib import Path
 
-from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, VisitWebpageTool
+from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel
 
 from auto_survey.tools import (
     count_characters,
-    fetch_pdf_as_markdown,
     final_answer,
     load_markdown_document_from_file,
+    parse_website,
     write_markdown_document_to_file,
 )
 
@@ -44,7 +44,9 @@ The report has the following requirements:
    appear in the References section.
 6. The report should be well-structured and written in a coherent story, rather than
    simply listing all the papers or being overly to-the-point.
-7. When you are done with your report, you should save it to the {output_path!r} file.
+7. Write the individual sections of the report separately, to avoid having to re-write
+   the entire report later on.
+8. When you are done with your report, you should save it to the {output_path!r} file.
    Use your tool to save the report, do not write the file directly yourself.
 
 You can search the web for relevant papers, visit webpages, and fetch and read
@@ -102,12 +104,11 @@ def get_literature_survey_agent(
             "numpy",
         ],
         tools=[
-            fetch_pdf_as_markdown,
+            parse_website,
             write_markdown_document_to_file,
             load_markdown_document_from_file,
             count_characters,
             DuckDuckGoSearchTool(max_results=100, rate_limit=1),
-            VisitWebpageTool(max_output_length=40_000),
             final_answer,
         ],
         max_steps=1000,

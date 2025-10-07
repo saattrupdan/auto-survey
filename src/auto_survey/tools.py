@@ -12,21 +12,23 @@ logger = logging.getLogger("auto_survey")
 
 
 @tool
-def fetch_pdf_as_markdown(pdf_url: str) -> str:
-    """Fetch a PDF from a URL and convert it to Markdown.
+def parse_website(url: str) -> str:
+    """Visit a website and return its content as Markdown.
+
+    This can parse both HTML, PDF content and more.
 
     Args:
-        pdf_url:
-            The URL of the PDF to fetch.
+        url:
+            The URL of the website to visit.
 
     Returns:
-        The content of the PDF converted to Markdown.
+        The content of the website converted to Markdown.
 
     Raises:
         RuntimeError:
-            If the PDF could not be parsed.
+            If the website could not be fetched or parsed.
     """
-    result = DocumentConverter().convert(source=pdf_url)
+    result = DocumentConverter().convert(source=url)
     markdown = result.document.export_to_markdown()
     return markdown
 
