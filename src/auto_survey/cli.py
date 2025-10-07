@@ -82,9 +82,11 @@ def main(
     agent = get_literature_survey_agent(
         model_id=model_id, api_base=api_base, api_key=api_key, output_path=markdown_path
     )
-    markdown_report = str(agent.run(task=description, reset=True))
-    markdown_path.write_text(markdown_report, encoding="utf-8")
-    logger.info(f"Markdown report saved to {markdown_path}")
+    agent.run(task=description, reset=True)
+
+    if not markdown_path.exists():
+        logger.error("The Markdown report was not created.")
+        return
 
     # Convert the Markdown file to a PDF file, if dependencies are installed
     pandoc_installed = (
