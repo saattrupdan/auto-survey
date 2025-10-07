@@ -65,6 +65,7 @@ def get_literature_survey_agent(
     Returns:
         The agent.
     """
+    output_path.unlink(missing_ok=True)
     model = LiteLLMModel(
         model_id=model_id,
         api_base=api_base,

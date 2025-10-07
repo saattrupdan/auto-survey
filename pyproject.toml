@@ -21,7 +21,7 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "requests>=2.32.5",
     "scholarly>=1.7.11",
-    "smolagents>=1.22.0",
+    "smolagents[gradio]>=1.22.0",
     "termcolor>=3.1.0",
 ]
 
@@ -34,6 +34,7 @@ file = "LICENSE"
 
 [project.scripts]
 conduct-survey = "auto_survey.cli:main"
+run-auto-survey = "auto_survey.app:main"
 
 [dependency-groups]
 dev = [

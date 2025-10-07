@@ -1,4 +1,4 @@
-"""Command-line interface for the application."""
+"""Run the AutoSurvey application."""
 
 import logging
 import os
@@ -8,6 +8,7 @@ from pathlib import Path
 import click
 import litellm
 from dotenv import load_dotenv
+from smolagents import GradioUI
 from termcolor import colored
 
 from auto_survey.agent import get_literature_survey_agent
@@ -25,7 +26,6 @@ logger = logging.getLogger("auto_survey")
 
 
 @click.command()
-@click.argument("description", type=str, required=True)
 @click.option(
     "--model-id",
     type=str,
@@ -55,13 +55,9 @@ logger = logging.getLogger("auto_survey")
     help="The directory to save the output files.",
 )
 def main(
-    description: str,
-    model_id: str,
-    api_base: str | None,
-    api_key: str | None,
-    output_dir: Path,
+    model_id: str, api_base: str | None, api_key: str | None, output_dir: Path
 ) -> None:
-    """Conduct a literature survey based on the provided description."""
+    """Run the AutoSurvey application."""
     # Suppress logging, except for the AutoSurvey logger
     litellm.suppress_debug_info = True
     warnings.filterwarnings("ignore", category=UserWarning)
@@ -76,7 +72,8 @@ def main(
         api_key=api_key,
         output_path=output_dir / "report.md",
     )
-    agent.run(task=description, reset=True)
+    app = GradioUI(agent=agent)
+    app.launch(share=True)
 
 
 if __name__ == "__main__":

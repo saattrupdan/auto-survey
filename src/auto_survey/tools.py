@@ -1,6 +1,7 @@
 """Tools to use during agent execution."""
 
 import logging
+import subprocess
 from pathlib import Path
 
 from docling.document_converter import DocumentConverter
@@ -100,4 +101,32 @@ def final_answer(path_to_markdown_report: str) -> str:
             f"{len(markdown):,} characters, which is less than the minimum of 10,000 "
             "characters."
         )
+
+    # Convert the Markdown file to a PDF file, if dependencies are installed
+    pandoc_installed = (
+        subprocess.run(["pandoc", "--version"], capture_output=True).returncode == 0
+    )
+    weasyprint_installed = (
+        subprocess.run(["weasyprint", "--version"], capture_output=True).returncode == 0
+    )
+    if pandoc_installed and weasyprint_installed:
+        subprocess.run(
+            [
+                "pandoc",
+                "--pdf-engine=weasyprint",
+                str(path),
+                "-o",
+                str(path.with_suffix(".pdf")),
+            ],
+            capture_output=True,
+        )
+        logger.info(f"PDF report saved to {path.with_suffix('.pdf')}")
+    else:
+        logger.warning(
+            "Pandoc and/or WeasyPrint not installed. Skipping PDF generation. If you "
+            "get them installed, you can run the following command to convert the "
+            "Markdown report to PDF:\n"
+            f"`pandoc --pdf-engine=weasyprint {path} -o {path.with_suffix('.pdf')}`"
+        )
+
     return path.as_posix()
