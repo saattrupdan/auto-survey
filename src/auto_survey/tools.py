@@ -202,3 +202,10 @@ def count_characters(text: str) -> int:
         The number of characters in the text.
     """
     return len(text)
+
+
+# TODO: Consider Semantic Scholar API tool
+# Search API: https://api.semanticscholar.org/graph/v1/paper/search?limit=NUM_RESULTS&query=QUERY
+#   - This API gives a list of paper IDs
+# Paper API: https://api.semanticscholar.org/graph/v1/paper/PAPER_ID?fields=url,year,authors
+#   - This API gives the title, URL, year and author IDs of a paper given its paper ID
