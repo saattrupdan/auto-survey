@@ -115,13 +115,24 @@ def final_answer(path_to_markdown_report: str) -> str:
         )
 
     # Ensure that there are double newlines between references in the References section
-    references_section = markdown.split("## References")[-1]
-    references_section = re.sub(r"\n+", "\n\n", references_section.strip())
-    markdown = (
-        markdown.split("## References")[0]
-        + "\n\n## References\n\n"
-        + references_section
-    )
+    references_section = markdown.split("## References")[-1].strip()
+    if "\n\n" not in references_section:
+        references_section = re.sub(r"\n+", "\n\n", references_section.strip())
+        markdown = (
+            markdown.split("## References")[0]
+            + "\n\n## References\n\n"
+            + references_section
+        )
+        path.write_text(data=markdown, encoding="utf-8")
+        logger.info(
+            "Replaced the newlines between references in the References section with "
+            "double newlines."
+        )
+    else:
+        logger.info(
+            "The References has correctly formatted double newlines between "
+            "references 🎉"
+        )
 
     # Convert the Markdown file to a PDF file, if dependencies are installed
     pandoc_installed = (
