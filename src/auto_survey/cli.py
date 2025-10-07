@@ -68,8 +68,6 @@ def main(
         if logging_name != "auto_survey":
             logging.getLogger(logging_name).setLevel(logging.CRITICAL)
 
-    logger.info("Conducting literature survey...")
-
     # Set up paths
     output_dir.mkdir(parents=True, exist_ok=True)
     markdown_path = output_dir / "report.md"
