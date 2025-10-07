@@ -54,7 +54,7 @@ def get_literature_survey_agent(
     agent = CodeAgent(
         model=model,
         instructions=LITERATURE_SURVEY_AGENT_SYSTEM_PROMPT,
-        max_print_outputs_length=500,
+        max_print_outputs_length=10_000,
         stream_outputs=True,
         code_block_tags="markdown",
         additional_authorized_imports=[
