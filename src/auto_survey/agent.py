@@ -2,9 +2,9 @@
 
 import logging
 
-from smolagents import CodeAgent, LiteLLMModel, VisitWebpageTool, WebSearchTool
+from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, VisitWebpageTool
 
-from auto_survey.tools import search_google_scholar
+from auto_survey.tools import get_search_google_scholar_tool
 
 logger = logging.getLogger("auto_survey")
 
@@ -75,8 +75,8 @@ def get_literature_survey_agent(
             "numpy",
         ],
         tools=[
-            search_google_scholar,
-            WebSearchTool(max_results=10, engine="duckduckgo"),
+            get_search_google_scholar_tool(),
+            DuckDuckGoSearchTool(max_results=10, rate_limit=1),
             VisitWebpageTool(max_output_length=40_000),
         ],
         max_steps=1000,
