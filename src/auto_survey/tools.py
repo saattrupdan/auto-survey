@@ -150,4 +150,7 @@ def final_answer(path_to_markdown_report: str) -> str:
             f"`pandoc --pdf-engine=weasyprint {path} -o {path.with_suffix('.pdf')}`"
         )
 
-    return path.as_posix()
+    return (
+        f"All done! You can find the Markdown report at {path.resolve()} and the "
+        f"associated PDF version of the report at {path.with_suffix('.pdf').resolve()}."
+    )
