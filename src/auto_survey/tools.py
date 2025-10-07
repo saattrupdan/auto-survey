@@ -3,8 +3,8 @@
 import logging
 from pathlib import Path
 
+from docling.document_converter import DocumentConverter
 from smolagents import tool
-from tika import parser as pdf_parser
 
 logger = logging.getLogger("auto_survey")
 
@@ -24,15 +24,9 @@ def fetch_pdf_as_markdown(pdf_url: str) -> str:
         RuntimeError:
             If the PDF could not be parsed.
     """
-    parsed_pdf = pdf_parser.from_file(pdf_url, service="text")
-    if not isinstance(parsed_pdf, dict):
-        raise RuntimeError(
-            f"Failed to parse the PDF, received {parsed_pdf} instead of a dict."
-        )
-    pdf_content = parsed_pdf["content"]
-    if pdf_content is None:
-        raise RuntimeError("Failed to extract content from the PDF, as it was None.")
-    return pdf_content
+    result = DocumentConverter().convert(source=pdf_url)
+    markdown = result.document.export_to_markdown()
+    return markdown
 
 
 @tool
