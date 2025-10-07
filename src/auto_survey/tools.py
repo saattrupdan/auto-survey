@@ -91,6 +91,13 @@ def final_answer(path_to_markdown_report: str) -> str:
 
     Returns:
         A message indicating that the final answer was provided.
+
+    Raises:
+        FileNotFoundError:
+            If the file does not exist.
+        ValueError:
+            If the report is too short, does not contain a References section, or
+            contains fewer than 10 references.
     """
     # Raise error if the file does not exist
     path = Path(path_to_markdown_report)
@@ -132,6 +139,21 @@ def final_answer(path_to_markdown_report: str) -> str:
         logger.info(
             "The References has correctly formatted double newlines between "
             "references 🎉"
+        )
+
+    # Raise error if there are fewer than 10 references in the References section
+    num_references = len(
+        [
+            line.strip()
+            for line in markdown.split("## References")[-1].splitlines()
+            if line.strip()
+        ]
+    )
+    if num_references < 10:
+        raise ValueError(
+            "The report contains fewer than 10 references in the References section. "
+            f"It only contains {num_references} references. Please find more academic "
+            "papers to include in the report."
         )
 
     # Convert the Markdown file to a PDF file, if dependencies are installed

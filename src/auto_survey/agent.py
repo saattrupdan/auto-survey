@@ -26,23 +26,24 @@ format.
 The report has the following requirements:
 
 1. It should be at least 5 pages long (at least 2,500 words).
-2. All references follow the APA format, meaning that inline citations are either of the
+2. It must contain data from at least 10 academic papers.
+3. All references follow the APA format, meaning that inline citations are either of the
    form "Author (Year)" or "(Author, Year)", whichever is more appropriate in the
    context. If there are one or two authors than both should be listed, otherwise use
    "Author et al. (Year)" or "(Author et al., Year)". Only use the last names of the
    authors.
-3. There is a references section (## References) at the end of the report in APA style,
+4. There is a references section (## References) at the end of the report in APA style,
    with double newlines between references. The references in this section have to
    contain all the authors (no "et al." required here), the year, the title, the venue
    (e.g., conference or journal name), and a link to the paper (prefer DOI links where
    possible). If the reference is to a webpage, include the title, the author (if
    available), the year (if available), the URL, and the date you accessed the page
    (today's date is {today_date}).
-4. Each claim in the report should be backed up by at least one reference, which must
+5. Each claim in the report should be backed up by at least one reference, which must
    appear in the References section.
-5. The report should be well-structured and written in a coherent story, rather than
+6. The report should be well-structured and written in a coherent story, rather than
    simply listing all the papers or being overly to-the-point.
-6. When you are done with your report, you should save it to the {output_path!r} file.
+7. When you are done with your report, you should save it to the {output_path!r} file.
 
 You can search the web for relevant papers, visit webpages, and fetch and read
 academic papers in PDF format. You should prioritise academic papers from reputable
