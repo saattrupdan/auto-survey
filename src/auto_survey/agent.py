@@ -24,7 +24,7 @@ format.
 
 The report has the following requirements:
 
-1. It should be at least 3 pages long (at least 1500 words).
+1. It should be at least 5 pages long (at least 2,500 words).
 2. Each claim in the report should be backed up by at least one reference to a relevant
    paper.
 3. All references follow the APA format, meaning that inline citations are either of the
