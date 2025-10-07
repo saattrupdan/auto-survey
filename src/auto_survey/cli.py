@@ -31,12 +31,14 @@ logger = logging.getLogger("auto_survey")
     "--model-id",
     type=str,
     default="hosted_vllm/synquid/gemma-3-27b-it-FP8",
-    help="The model ID to use. Default is to use the Gemma-3-27B-it model.",
+    show_default=True,
+    help="The model ID to use.",
 )
 @click.option(
     "--api-base",
     type=str,
     default="https://inference.projects.alexandrainst.dk/v1",
+    show_default=True,
     help="The API base URL for the model, if a custom inference server is used. Can be "
     "None if not needed.",
 )
@@ -49,8 +51,9 @@ logger = logging.getLogger("auto_survey")
 @click.option(
     "--output-dir",
     type=click.Path(file_okay=False, dir_okay=True, writable=True, path_type=Path),
-    default=Path("auto_survey"),
-    help="The directory to save the output files. Default is 'auto_survey'.",
+    default=Path("auto_survey_reports"),
+    show_default=True,
+    help="The directory to save the output files.",
 )
 def main(
     description: str,
@@ -75,7 +78,7 @@ def main(
 
     # Create the Markdown report and save it to a file
     agent = get_literature_survey_agent(
-        model_id=model_id, api_base=api_base, api_key=api_key
+        model_id=model_id, api_base=api_base, api_key=api_key, output_path=markdown_path
     )
     markdown_report = str(agent.run(task=description, reset=True))
     markdown_path.write_text(markdown_report, encoding="utf-8")

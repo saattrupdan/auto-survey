@@ -1,10 +1,15 @@
 """Agents used within the application."""
 
 import logging
+from pathlib import Path
 
 from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, VisitWebpageTool
 
-from auto_survey.tools import get_search_google_scholar_tool
+from auto_survey.tools import (
+    get_search_google_scholar_tool,
+    load_markdown_document_from_file,
+    write_markdown_document_to_file,
+)
 
 logger = logging.getLogger("auto_survey")
 
@@ -33,11 +38,15 @@ To help you find the papers, you can search academic databases such as Google Sc
 and ArXiv, as well as general web searches.
 
 Your report should be at least 3 pages long. That is, it should be at least 1500 words.
+
+When you are done with your report, you should save it to the {output_path} file. Feel
+free to store draft versions of the report as you go along, just overwrite the file each
+time you save it.
 """.strip()
 
 
 def get_literature_survey_agent(
-    model_id: str, api_base: str | None, api_key: str | None
+    model_id: str, api_base: str | None, api_key: str | None, output_path: Path
 ) -> CodeAgent:
     """Create an agent that conducts literature reviews.
 
@@ -48,6 +57,8 @@ def get_literature_survey_agent(
             The API base URL for the model. Can be None if not needed.
         api_key:
             The API key for the model. Can be None if not needed.
+        output_path:
+            The path to save the output Markdown report to.
 
     Returns:
         The agent.
@@ -62,7 +73,9 @@ def get_literature_survey_agent(
     )
     agent = CodeAgent(
         model=model,
-        instructions=LITERATURE_SURVEY_AGENT_SYSTEM_PROMPT,
+        instructions=LITERATURE_SURVEY_AGENT_SYSTEM_PROMPT.format(
+            output_path=output_path.as_posix()
+        ),
         max_print_outputs_length=10_000,
         stream_outputs=True,
         code_block_tags="markdown",
@@ -76,6 +89,8 @@ def get_literature_survey_agent(
         ],
         tools=[
             get_search_google_scholar_tool(),
+            write_markdown_document_to_file,
+            load_markdown_document_from_file,
             DuckDuckGoSearchTool(max_results=10, rate_limit=1),
             VisitWebpageTool(max_output_length=40_000),
         ],

@@ -1,6 +1,7 @@
 """Tools to use during agent execution."""
 
 import logging
+from pathlib import Path
 
 from scholarly import ProxyGenerator, scholarly
 from smolagents import Tool, tool
@@ -53,3 +54,53 @@ def get_search_google_scholar_tool() -> Tool:
         return search_results
 
     return search_google_scholar
+
+
+@tool
+def write_markdown_document_to_file(markdown: str, file_path: str) -> str:
+    """Write a Markdown document to a file.
+
+    Args:
+        markdown:
+            The Markdown document to write.
+        file_path:
+            The path to the file to write the document to.
+
+    Returns:
+        A message indicating that the document was written successfully.
+
+    Raises:
+        ValueError:
+            If the file path does not end with .md.
+    """
+    if not file_path.endswith(".md"):
+        raise ValueError("The file path must end with .md")
+    path = Path(file_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(data=markdown, encoding="utf-8")
+    return f"Markdown document written to {file_path}"
+
+
+@tool
+def load_markdown_document_from_file(file_path: str) -> str:
+    """Load a Markdown document from a file.
+
+    Args:
+        file_path:
+            The path to the file to load the document from.
+
+    Returns:
+        The loaded Markdown document.
+
+    Raises:
+        ValueError:
+            If the file path does not end with .md.
+        FileNotFoundError:
+            If the file does not exist.
+    """
+    if not file_path.endswith(".md"):
+        raise ValueError("The file path must end with .md")
+    path = Path(file_path)
+    if not path.exists():
+        raise FileNotFoundError(f"The file {file_path} does not exist.")
+    return path.read_text(encoding="utf-8")
