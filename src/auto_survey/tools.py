@@ -119,12 +119,13 @@ def final_answer(path_to_markdown_report: str) -> str:
 
     # Raise error if the report is too short
     markdown = path.read_text(encoding="utf-8")
-    if len(markdown) < 10_000:
+    num_words = len(re.findall(r"\b\w+\b", markdown))
+    if num_words < 1_500:
         raise ValueError(
             "The report is too short to be a final answer. It only contains "
-            f"{len(markdown):,} characters, which is less than the minimum of 10,000 "
-            "characters. Elaborate further on the papers you found, or consider "
-            "finding more papers to include in the report."
+            f"{num_words} words. Please expand the report to at least 2,500 words, "
+            "e.g., by adding more details to your sections and/or finding more papers "
+            "to include in the report."
         )
 
     # Raise error if the report does not contain a References section
@@ -204,17 +205,18 @@ def final_answer(path_to_markdown_report: str) -> str:
 
 
 @tool
-def count_characters(text: str) -> int:
-    """Count the number of characters in a text.
+def count_words(text: str) -> int:
+    """Count the number of words in a text.
 
     Args:
         text:
-            The text to count the characters in.
+            The text to count the words in.
 
     Returns:
-        The number of characters in the text.
+        The number of words in the text.
     """
-    return len(text)
+    words = re.findall(r"\b\w+\b", text)
+    return len(words)
 
 
 @tool

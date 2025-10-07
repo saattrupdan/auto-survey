@@ -7,7 +7,7 @@ from pathlib import Path
 from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel
 
 from auto_survey.tools import (
-    count_characters,
+    count_words,
     final_answer,
     find_papers,
     load_markdown_document_from_file,
@@ -110,7 +110,7 @@ def get_literature_survey_agent(
             parse_website,
             write_markdown_document_to_file,
             load_markdown_document_from_file,
-            count_characters,
+            count_words,
             DuckDuckGoSearchTool(max_results=100, rate_limit=1),
             final_answer,
         ],
