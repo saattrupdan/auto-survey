@@ -75,6 +75,8 @@ def main(
     output_dir.mkdir(parents=True, exist_ok=True)
     markdown_path = output_dir / "report.md"
     pdf_path = output_dir / "report.pdf"
+    markdown_path.unlink(missing_ok=True)
+    pdf_path.unlink(missing_ok=True)
 
     # Create the Markdown report and save it to a file
     agent = get_literature_survey_agent(
