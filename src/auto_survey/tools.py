@@ -80,14 +80,24 @@ def load_markdown_document_from_file(file_path: str) -> str:
 
 
 @tool
-def final_answer(answer: str) -> str:
+def final_answer(path_to_markdown_report: str) -> str:
     """Provide the final answer to the user.
 
     Args:
-        answer:
-            The final answer to provide to the user.
+        path_to_markdown_report:
+            The path to the saved Markdown report file.
 
     Returns:
         A message indicating that the final answer was provided.
     """
-    return answer
+    path = Path(path_to_markdown_report)
+    if not path.exists():
+        raise FileNotFoundError(f"The file {path_to_markdown_report} does not exist.")
+    markdown = path.read_text(encoding="utf-8")
+    if len(markdown) < 10_000:
+        raise ValueError(
+            "The report is too short to be a final answer. It only contains "
+            f"{len(markdown):,} characters, which is less than the minimum of 10,000 "
+            "characters."
+        )
+    return path.as_posix()
