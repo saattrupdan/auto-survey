@@ -5,11 +5,10 @@ import tempfile
 from time import sleep
 
 import httpx
-import litellm
 from docling.document_converter import DocumentConverter
-from litellm.types.utils import ModelResponse
 
 from auto_survey.data_models import LiteLLMConfig, Paper, Summary
+from auto_survey.llm import get_llm_completion
 from auto_survey.utils import no_progress_bars
 
 logger = logging.getLogger("auto_survey")
@@ -59,49 +58,57 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
                 f"Failed to fetch PDF from {paper.url}, after {num_attempts} attempts."
             )
 
+    # Truncate the middle of the content if it's too long
+    max_content_length = 150_000
+    if len(content) > max_content_length:
+        half_length = max_content_length // 2
+        content = (
+            content[:half_length]
+            + "\n\n(...content truncated...)\n\n"
+            + content[-half_length:]
+        )
+        logger.warning(
+            f"The content from the PDF at {paper.url} was too long, so it was "
+            "truncated."
+        )
+
     # If we couldn't get the content from the PDF, use the title and summary
     if content == "":
         content = f"# {paper.title}"
         if paper.summary != "":
             content += f"\n\n## Summary\n\n{paper.summary}"
 
-    response = litellm.completion(
+    system_prompt = """
+        You are an expert research assistant. Your task is to read and summarise
+        research papers. The summary should focus on the provided topic, highlighting
+        the most relevant points from the paper. The summary should be concise and
+        informative.
+    """.strip()
+
+    user_prompt = f"""
+        Summarise the following paper, focusing on the topic {topic!r}. The summary
+        should be concise and informative, highlighting the most relevant points from
+        the paper.
+
+        <paper>
+        {content}
+        </paper>
+
+        You should return a JSON dictionary with a single key 'summary' mapping to the
+        summary string.
+    """.strip()
+
+    completion = get_llm_completion(
         messages=[
-            dict(
-                role="system",
-                content="""
-                    You are an expert research assistant. Your task is to read and
-                    summarise research papers. The summary should focus on the provided
-                    topic, highlighting the most relevant points from the paper. The
-                    summary should be concise and informative.
-                """.strip(),
-            ),
-            dict(
-                role="user",
-                content=f"""
-                    Summarise the following paper, focusing on the topic {topic!r}. The
-                    summary should be concise and informative, highlighting the most
-                    relevant points from the paper.
-
-                    <paper>
-                    {content}
-                    </paper>
-
-                    You should return a JSON dictionary with a single key 'summary'
-                    mapping to the summary string.
-                """.strip(),
-            ),
+            dict(role="system", content=system_prompt),
+            dict(role="user", content=user_prompt),
         ],
         temperature=0.0,
         max_tokens=1024,
         response_format=Summary,
-        **litellm_config.model_dump(),
+        litellm_config=litellm_config,
     )
-    assert isinstance(response, ModelResponse)
-    choice = response.choices[0]
-    assert isinstance(choice, litellm.Choices)
-    json_dict = choice.message.content or "{}"
-    summary = Summary.model_validate_json(json_data=json_dict).summary
+    summary = Summary.model_validate_json(json_data=completion).summary
     return summary
 
 

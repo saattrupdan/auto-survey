@@ -56,7 +56,7 @@ logger = logging.getLogger("auto_survey")
 @click.option(
     "--num-papers",
     type=int,
-    default=20,
+    default=50,
     show_default=True,
     help="The minimum number of relevant papers to find.",
 )

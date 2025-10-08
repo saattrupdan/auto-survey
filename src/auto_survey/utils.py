@@ -14,7 +14,7 @@ class no_progress_bars:
 
     def __enter__(self) -> None:
         """Disable all `tqdm` progress bars."""
-        tqdm.__init__ = partialmethod(tqdm.__init__, disable=True)
+        tqdm.__init__ = partialmethod(tqdm.__init__, disable=True)  # type: ignore
 
     def __exit__(
         self,

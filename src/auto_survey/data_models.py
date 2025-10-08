@@ -31,6 +31,37 @@ class Paper(BaseModel):
     url: str
     summary: str
 
+    def get_citation(self, in_parens: bool) -> str:
+        """Get the citation for the paper in APA style.
+
+        Args:
+            in_parens:
+                Whether the citation is in parentheses or not. If True, the citation
+                should be of the form "(Author, Year)". If False, the citation should be
+                of the form "Author (Year)".
+
+        Returns:
+            The citation.
+        """
+        if not self.authors:
+            author_str = "Unknown Author"
+        elif len(self.authors) == 1:
+            author = self.authors[0]
+            author_str = f"{author.last_name}"
+        elif len(self.authors) == 2:
+            author1 = self.authors[0]
+            author2 = self.authors[1]
+            author_str = f"{author1.last_name} and {author2.last_name}"
+        else:
+            author1 = self.authors[0]
+            author_str = f"{author1.last_name} et al."
+
+        year_str = str(self.year) if self.year != -1 else "n.d."
+        if in_parens:
+            return f"({author_str}, {year_str})"
+        else:
+            return f"{author_str} ({year_str})"
+
     def __eq__(self, other: object) -> bool:
         """Check if two Paper instances are equal based on their attributes.
 

@@ -5,11 +5,10 @@ import os
 import time
 
 import httpx
-import litellm
-from litellm.types.utils import ModelResponse
 from tqdm.auto import tqdm
 
 from auto_survey.data_models import Author, IsRelevant, LiteLLMConfig, Paper, Queries
+from auto_survey.llm import get_llm_completion
 
 logger = logging.getLogger("auto_survey")
 
@@ -103,43 +102,34 @@ def get_list_of_queries(
     """
     logger.info(f"Generating {num_queries} search queries for the topic {topic!r}...")
 
-    response = litellm.completion(
+    system_prompt = """
+        You are an expert academic researcher. Your task is to generate a list of
+        concise search queries that can be used to find academic papers related to a
+        given topic. The queries should be specific enough to yield relevant results,
+        but not so specific that they miss important papers. Each query should be a
+        single line of text. Do not use 'OR' or 'AND' statements in the queries.
+    """.strip()
+
+    user_prompt = f"""
+        Generate a list of exactly {num_queries} concise search queries to find academic
+        papers related to the following topic: {topic!r}. Return the queries as a JSON
+        object with a single key 'queries' mapping to a list of strings.
+    """.strip()
+
+    completion = get_llm_completion(
         messages=[
-            dict(
-                role="system",
-                content="""
-                    You are an expert academic researcher. Your task is to generate a
-                    list of concise search queries that can be used to find academic
-                    papers related to a given topic. The queries should be specific
-                    enough to yield relevant results, but not so specific that they
-                    miss important papers. Each query should be a single line of
-                    text. Do not use 'OR' or 'AND' statements in the queries.
-                """.strip(),
-            ),
-            dict(
-                role="user",
-                content=f"""
-                    Generate a list of exactly {num_queries} concise search
-                    queries to find academic papers related to the following
-                    topic: {topic!r}. Return the queries as a JSON object
-                    with a single key 'queries' mapping to a list of strings.
-                """.strip(),
-            ),
+            dict(role="system", content=system_prompt),
+            dict(role="user", content=user_prompt),
         ],
         temperature=0.5,
         max_tokens=256,
         response_format=Queries,
-        **litellm_config.model_dump(),
+        litellm_config=litellm_config,
     )
-    assert isinstance(response, ModelResponse)
-    choice = response.choices[0]
-    assert isinstance(choice, litellm.Choices)
-    json_dict = choice.message.content or "{}"
-    queries = Queries.model_validate_json(json_data=json_dict).queries
+    queries = Queries.model_validate_json(json_data=completion).queries
 
     queries_str = "\n".join(f"- {query}" for query in queries)
     logger.info(f"Generated {len(queries)} queries:\n{queries_str}")
-
     return queries
 
 
@@ -157,46 +147,39 @@ def is_relevant_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -
     Returns:
         True if the paper is relevant, False otherwise.
     """
-    response = litellm.completion(
+    system_prompt = """
+        You are an expert academic researcher. Your task is to determine whether a given
+        academic paper is relevant to a specified topic.
+
+        Err on the side of including a paper if you are unsure about its relevance.
+
+        You will be provided with the title and summary of the paper, as well as the
+        topic. Your response should be a JSON object with a single key 'is_relevant'
+        mapping to a boolean value: true if the paper is relevant to the topic, false
+        otherwise.
+    """.strip()
+
+    user_prompt = f"""
+        Determine if the following paper is relevant to the topic {topic!r}. Return your
+        answer as a JSON object with a single key 'is_relevant' mapping to a boolean
+        value.
+
+        <paper>
+        {paper.model_dump_json()}
+        </paper>
+    """.strip()
+
+    completion = get_llm_completion(
         messages=[
-            dict(
-                role="system",
-                content="""
-                    You are an expert academic researcher. Your task is to determine
-                    whether a given academic paper is relevant to a specified topic.
-
-                    Err on the side of including a paper if you are unsure about its
-                    relevance.
-
-                    You will be provided with the title and summary of the paper,
-                    as well as the topic. Your response should be a JSON object with
-                    a single key 'is_relevant' mapping to a boolean value: true if
-                    the paper is relevant to the topic, false otherwise.
-                """.strip(),
-            ),
-            dict(
-                role="user",
-                content=f"""
-                    Determine if the following paper is relevant to the topic
-                    {topic!r}. Return your answer as a JSON object with a single key
-                    'is_relevant' mapping to a boolean value.
-
-                    <paper>
-                    {paper.model_dump_json()}
-                    </paper>
-                """.strip(),
-            ),
+            dict(role="system", content=system_prompt),
+            dict(role="user", content=user_prompt),
         ],
         temperature=0.0,
-        max_tokens=256,
+        max_tokens=32,
         response_format=IsRelevant,
-        **litellm_config.model_dump(),
+        litellm_config=litellm_config,
     )
-    assert isinstance(response, ModelResponse)
-    choice = response.choices[0]
-    assert isinstance(choice, litellm.Choices)
-    json_dict = choice.message.content or "{}"
-    relevant = IsRelevant.model_validate_json(json_data=json_dict).is_relevant
+    relevant = IsRelevant.model_validate_json(json_data=completion).is_relevant
     return relevant
 
 
