@@ -200,7 +200,7 @@ def final_answer(path_to_markdown_report: str) -> str:
 
 
 @tool
-def find_papers(query: str, num_results: int) -> list[dict]:
+def find_papers(query: str, num_results: int, offset: int = 0) -> list[dict]:
     """Find academic papers related to a query.
 
     Args:
@@ -208,6 +208,9 @@ def find_papers(query: str, num_results: int) -> list[dict]:
             The query to search for.
         num_results:
             The number of results to return.
+        offset (optional):
+            Used for pagination. When returning a list of results, start with the
+            element at this position in the list. Defaults to 0.
 
     Returns:
         A list of dictionaries containing the title, URL, year and authors of the
@@ -222,8 +225,9 @@ def find_papers(query: str, num_results: int) -> list[dict]:
             url="https://api.semanticscholar.org/graph/v1/paper/search",
             params=dict(
                 query=query,
-                limit=num_results,
                 fields="title,url,year,authors,abstract,openAccessPdf",
+                limit=num_results,
+                offset=offset,
             ),
             headers={
                 "User-Agent": (
