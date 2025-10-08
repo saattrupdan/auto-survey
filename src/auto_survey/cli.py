@@ -42,10 +42,10 @@ logger = logging.getLogger("auto_survey")
     "None if not needed.",
 )
 @click.option(
-    "--api-key",
+    "--api-key-env-var",
     type=str,
-    default=os.getenv("INFERENCE_SERVER_API_KEY", None),
-    help="The API key for the model, if needed. Can be None if not needed.",
+    default="INFERENCE_SERVER_API_KEY",
+    help="The API key for the model.",
 )
 @click.option(
     "--output-dir",
@@ -54,12 +54,19 @@ logger = logging.getLogger("auto_survey")
     show_default=True,
     help="The directory to save the output files.",
 )
+@click.option(
+    "--stream/--no-stream",
+    default=False,
+    show_default=True,
+    help="Whether to stream outputs from the model.",
+)
 def main(
     description: str,
     model_id: str,
     api_base: str | None,
-    api_key: str | None,
+    api_key_env_var: str | None,
     output_dir: Path,
+    stream: bool,
 ) -> None:
     """Conduct a literature survey based on the provided description."""
     # Suppress logging, except for the AutoSurvey logger
@@ -73,8 +80,9 @@ def main(
     agent = get_literature_survey_agent(
         model_id=model_id,
         api_base=api_base,
-        api_key=api_key,
+        api_key=os.getenv(api_key_env_var) if api_key_env_var else None,
         output_path=output_dir / "report.md",
+        stream=stream,
     )
     agent.run(task=description, reset=True)
 

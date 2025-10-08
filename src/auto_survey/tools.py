@@ -38,7 +38,7 @@ def parse_website(url: str) -> str:
             "Firefox/143.0"
         )
     }
-    response = httpx.get(url=url, headers=headers)
+    response = httpx.get(url=url, headers=headers, follow_redirects=True, timeout=30)
     response.raise_for_status()
     with tempfile.NamedTemporaryFile(mode="w+b") as temp_file:
         temp_file.write(response.content)
@@ -121,17 +121,7 @@ def final_answer(path_to_markdown_report: str) -> str:
     if not path.exists():
         raise FileNotFoundError(f"The file {path_to_markdown_report} does not exist.")
 
-    # Raise error if the report is too short
     markdown = path.read_text(encoding="utf-8")
-    markdown_without_references = markdown.split("## References")[0]
-    num_words = len(re.findall(r"\b\w+\b", markdown_without_references))
-    if num_words < 1_500:
-        raise ValueError(
-            "The report is too short to be a final answer. It only contains "
-            f"{num_words} words, excluding references. Please expand the report to at "
-            "least 1,500 words (without references), e.g., by adding more details to "
-            "your sections and/or finding more papers to include in the report."
-        )
 
     # Raise error if the report does not contain a References section
     if "## References" not in markdown:
@@ -168,9 +158,9 @@ def final_answer(path_to_markdown_report: str) -> str:
             if line.strip()
         ]
     )
-    if num_references < 10:
+    if num_references < 15:
         raise ValueError(
-            "The report contains fewer than 10 references in the References section. "
+            "The report contains fewer than 14 references in the References section. "
             f"It only contains {num_references} references. Please find more academic "
             "papers to include in the report."
         )
@@ -243,6 +233,7 @@ def find_papers(query: str, num_results: int) -> list[dict]:
                 "x-api-key": os.getenv("SEMANTIC_SCHOLAR_API_KEY", ""),
             },
             timeout=30,
+            follow_redirects=True,
         )
         if response.status_code == 429:
             logger.warning(
