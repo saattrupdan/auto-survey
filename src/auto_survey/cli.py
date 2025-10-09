@@ -14,6 +14,7 @@ from auto_survey.data_models import LiteLLMConfig
 from auto_survey.pdf_conversion import convert_markdown_file_to_pdf
 from auto_survey.search import get_all_papers, is_relevant_paper
 from auto_survey.summarisation import summarise_paper
+from auto_survey.utils import suppress_logging
 from auto_survey.writing import write_literature_survey
 
 logger = logging.getLogger("auto_survey")
@@ -86,6 +87,7 @@ def main(
     verbose: bool,
 ) -> None:
     """Conduct a literature survey based on the provided topic."""
+    suppress_logging()
     if verbose:
         logger.setLevel(logging.DEBUG)
 

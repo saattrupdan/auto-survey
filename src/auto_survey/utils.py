@@ -1,7 +1,11 @@
 """Utility functions in the application."""
 
+import logging
 import os
 import sys
+import warnings
+
+import litellm
 
 
 class no_terminal_output:
@@ -36,3 +40,19 @@ class no_terminal_output:
             sys.stderr.close()
             sys.stdout = self._original_stdout
             sys.stderr = self._original_stderr
+
+
+def suppress_logging() -> None:
+    """Suppress logging from all other libraries than ours."""
+    litellm.suppress_debug_info = True
+
+    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=FutureWarning)
+
+    logger_names_to_ignore = [
+        logger
+        for logger in logging.root.manager.loggerDict.keys()
+        if logger != "auto_survey"
+    ] + ["weasyprint"]
+    for logging_name in logger_names_to_ignore:
+        logging.getLogger(logging_name).setLevel(logging.CRITICAL)
