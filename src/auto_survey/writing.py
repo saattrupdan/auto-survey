@@ -38,19 +38,20 @@ def write_literature_survey(
         headings, subheadings, and paragraphs.
 
         The survey should include:
-        - An introduction to the topic, explaining its significance and context.
-        - 1-3 sections, each with several paragraphs, covering different aspects of the
-          topic. Each section should synthesise information from multiple papers,
-          highlighting information that is relevant to the topic.
-        - A conclusion that summarises the key points discussed in the survey and
-          suggests potential directions for future research.
-        - References to the provided papers, formatted in APA style, meaning that the
-          references should be of the form "Author (Year)" or "(Author, Year)",
-          depending on the sentence structure. If there are 2 authors use "Author1 and
-          Author2 (Year)" or "(Author1 and Author2, Year)". If there are 3 or more
-          authors use "Author1 et al. (Year)" or "(Author1 et al., Year)". All
-          references should be separated by double newlines.
-        - All papers should be cited at least once in the survey.
+        - An introduction to the topic (named "Introduction"), explaining its
+          significance and context.
+        - 1-3 main content sections, each with several paragraphs, covering different
+          aspects of the topic. Each section should synthesise information from multiple
+          papers, highlighting information that is relevant to the topic.
+        - A conclusion (named "Conclusion") that summarises the key points discussed in
+          the survey.
+        - A references section (named "References") that lists all the papers cited in
+          the survey, formatted in APA style. This means that the references should be
+          of the form "Author (Year)" or "(Author, Year)", depending on the sentence
+          structure. If there are 2 authors use "Author1 and Author2 (Year)" or
+          "(Author1 and Author2, Year)". If there are 3 or more authors use "Author1 et
+          al. (Year)" or "(Author1 et al., Year)". All references in the References
+          section should be separated by double newlines.
 
         Return only the Markdown content of the literature survey, without any
         additional commentary or explanation.
@@ -88,43 +89,7 @@ def write_literature_survey(
         ):
             papers_missing_citations.append(paper)
 
-    # If any papers are missing citations, ask the LLM to revise the survey to include
-    # citations for these papers
-    if papers_missing_citations:
-        logger.warning(
-            f"There are {len(papers_missing_citations)} papers that are not cited in "
-            "the literature survey. Asking the LLM to revise the survey to include "
-            "citations for these papers."
-        )
-        missing_papers_str = "\n\n".join(
-            str(paper) for paper in papers_missing_citations
-        )
-        correction_prompt = f"""
-            The following papers were not cited in the literature survey you wrote:
-
-            <missing-papers>
-            {missing_papers_str}
-            </missing-papers>
-
-            Please revise the literature survey to include at least one citation for
-            each of these papers, ensuring that the citations are appropriately
-            integrated into the text. Return only the revised Markdown content of the
-            literature survey, without any additional commentary or explanation.
-        """.strip()
-        literature_survey = get_llm_completion(
-            messages=[
-                dict(role="system", content=system_prompt),
-                dict(role="user", content=user_prompt),
-                dict(role="assistant", content=literature_survey),
-                dict(role="user", content=correction_prompt),
-            ],
-            temperature=0.5,
-            max_tokens=10_000,
-            litellm_config=litellm_config,
-            response_format=None,
-        )
-
-    # If there are any still missing citations, log a warning and remove them from the
+    # If there are any smissing citations, log a warning and remove them from the
     # references section
     papers_still_missing_citations: list[Paper] = []
     for paper in relevant_papers:
@@ -138,8 +103,8 @@ def write_literature_survey(
     if papers_still_missing_citations:
         logger.warning(
             f"There are {len(papers_still_missing_citations)} papers that are not "
-            "cited in the literature survey, even after asking the LLM to fix it. "
-            "These papers will be omitted from the references section."
+            "cited in the literature survey. These papers will be omitted from the "
+            "references section."
         )
         content_part, references_part = literature_survey.rsplit("## References", 1)
         references_lines = references_part.strip().splitlines()
