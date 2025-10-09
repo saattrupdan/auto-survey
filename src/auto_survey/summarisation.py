@@ -6,7 +6,7 @@ from time import sleep
 
 import httpx
 from docling.document_converter import DocumentConverter
-from docling.exceptions import ConversionError  # type: ignore[import]
+from docling.exceptions import ConversionError
 
 from auto_survey.data_models import LiteLLMConfig, Paper, Summary
 from auto_survey.llm import get_llm_completion
