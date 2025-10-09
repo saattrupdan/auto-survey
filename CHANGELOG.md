@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- We now check whether `pandoc` and `pdflatex` are installed before attempting to
+  convert the generated Markdown survey into PDF, and give an informative error message
+  describing how to install these.
+
 ## [v0.1.2] - 2025-10-09
 
 ### Fixed

@@ -5,6 +5,7 @@ import os
 import time
 
 import httpx
+from termcolor import colored
 from tqdm.auto import tqdm
 
 from auto_survey.data_models import Author, IsRelevant, LiteLLMConfig, Paper, Queries
@@ -44,7 +45,11 @@ def get_all_papers(
     offset = 0
     relevant_papers: list[Paper] = list()
     with tqdm(
-        total=num_relevant_papers, desc="Searching for papers", unit="paper", ascii="—▰"
+        total=num_relevant_papers,
+        desc=colored("Searching for papers", "light_yellow"),
+        unit="paper",
+        ascii="—▰",
+        colour="yellow",
     ) as pbar:
         while len(relevant_papers) < num_relevant_papers and queries:
             for query in queries:
@@ -100,7 +105,7 @@ def get_list_of_queries(
     Returns:
         A list of queries.
     """
-    logger.info(f"Generating {num_queries} search queries for the topic {topic!r}...")
+    logger.debug(f"Generating {num_queries} search queries for the topic {topic!r}...")
 
     system_prompt = """
         You are an expert academic researcher. Your task is to generate a list of
@@ -129,7 +134,7 @@ def get_list_of_queries(
     queries = Queries.model_validate_json(json_data=completion).queries
 
     queries_str = "\n".join(f"- {query}" for query in queries)
-    logger.info(f"Generated {len(queries)} queries:\n{queries_str}")
+    logger.debug(f"Generated {len(queries):,} search queries:\n{queries_str}")
     return queries
 
 
