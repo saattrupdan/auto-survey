@@ -21,7 +21,7 @@ The first thing to do is to [request an API key for Semantic
 Scholar](https://www.semanticscholar.org/product/api#api-key-form). Note that this can
 only be used for research purposes. Here are some suggested answers for the form:
 
-```text
+```markdown
 > How do you plan to use Semantic Scholar API in your project? (50 words or more)*
 
 Creating literature surveys using the AutoSurvey package.
@@ -38,7 +38,7 @@ Around 100 requests per day.
 When you have it, you create a file called `.env` in your current directory with the
 following content:
 
-```text
+```bash
 SEMANTIC_SCHOLAR_API_KEY="<your key here>"
 ```
 
@@ -50,7 +50,7 @@ Next, you need to set up an API key for the large language model (LLM) that you 
 use. The default model is `gpt-4.1-mini` from OpenAI, which requires you to have an OpenAI
 API key, and again add it to your `.env` file:
 
-```text
+```bash
 OPENAI_API_KEY="<your key here>"
 ```
 
@@ -102,7 +102,7 @@ the `--base-url` argument with the URL to the inference API, and also set the
 `--api-key-env-var` argument with the name of the environment variable that contains the
 API key for the inference API. This variable must again be set in the `.env` file:
 
-```text
+```bash
 <value-of-api-key-env-var>="<your key here>"
 ```
 
