@@ -54,7 +54,7 @@ logger = logging.getLogger("auto_survey")
     type=int,
     default=50,
     show_default=True,
-    help="The minimum number of relevant papers to find.",
+    help="The number of relevant papers to find.",
 )
 @click.option(
     "--output-dir",
@@ -106,7 +106,7 @@ def main(
     # Search for relevant papers
     papers = get_all_papers(
         topic=topic,
-        min_num_relevant_papers=num_papers,
+        num_relevant_papers=num_papers,
         batch_size=5,
         litellm_config=litellm_config,
     )

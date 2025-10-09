@@ -14,18 +14,15 @@ logger = logging.getLogger("auto_survey")
 
 
 def get_all_papers(
-    topic: str,
-    min_num_relevant_papers: int,
-    batch_size: int,
-    litellm_config: LiteLLMConfig,
+    topic: str, num_relevant_papers: int, batch_size: int, litellm_config: LiteLLMConfig
 ) -> list[Paper]:
     """Get a list of relevant papers on a given topic.
 
     Args:
         topic:
             The topic to search for.
-        min_num_relevant_papers:
-            The minimum number of relevant papers to find.
+        num_relevant_papers:
+            The number of relevant papers to find.
         batch_size:
             The number of papers to fetch in each batch.
         litellm_config:
@@ -41,12 +38,9 @@ def get_all_papers(
     offset = 0
     relevant_papers: list[Paper] = list()
     with tqdm(
-        total=min_num_relevant_papers,
-        desc="Searching for papers",
-        unit="paper",
-        ascii="▱▰",
+        total=num_relevant_papers, desc="Searching for papers", unit="paper", ascii="▱▰"
     ) as pbar:
-        while len(relevant_papers) < min_num_relevant_papers and queries:
+        while len(relevant_papers) < num_relevant_papers and queries:
             for query in queries:
                 # Find papers for the current query. If this returns None, it means that
                 # the offset is too high, so we remove the query from the list of
@@ -71,17 +65,17 @@ def get_all_papers(
                     relevant_papers.extend(new_relevant_papers)
                     pbar.update(
                         len(new_relevant_papers)
-                        - max(len(relevant_papers) - min_num_relevant_papers, 0)
+                        - max(len(relevant_papers) - num_relevant_papers, 0)
                     )
 
                 # Stop if we have found enough relevant papers
-                if len(relevant_papers) >= min_num_relevant_papers:
+                if len(relevant_papers) >= num_relevant_papers:
                     break
 
             # Raise the offset to keep searching for papers with the same queries
             offset += batch_size
 
-    return relevant_papers
+    return relevant_papers[:num_relevant_papers]
 
 
 def get_list_of_queries(
