@@ -3,7 +3,7 @@
 
 <div align='center'>
 <img
-    src="https://raw.githubusercontent.com/saattrupdan/auto-survey/main/gfx/auto-survey-logo.png"
+    src="https://raw.githubusercontent.com/saattrupdan/auto-survey/refs/heads/main/gfx/auto-survey-logo.png"
     height="216"
     width="1154"
 >
