@@ -80,9 +80,9 @@ def main(
     verbose: bool,
 ) -> None:
     """Conduct a literature survey based on the provided topic."""
-    # Suppress logging, except for the AutoSurvey logger
-    if not verbose:
+    if verbose:
         logger.setLevel(logging.DEBUG)
+    else:
         litellm.suppress_debug_info = True
         warnings.filterwarnings("ignore", category=UserWarning)
         warnings.filterwarnings("ignore", category=FutureWarning)
