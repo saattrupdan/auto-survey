@@ -40,9 +40,10 @@ def write_literature_survey(
         The survey should include:
         - An introduction to the topic (named "Introduction"), explaining its
           significance and context.
-        - 1-3 main content sections, each with several paragraphs, covering different
-          aspects of the topic. Each section should synthesise information from multiple
-          papers, highlighting information that is relevant to the topic.
+        - 2-3 main content sections, each with multiple paragraphs separated by double
+          newlines, covering different aspects of the topic. Each section should
+          synthesise information from multiple papers, highlighting information that is
+          relevant to the topic.
         - A conclusion (named "Conclusion") that summarises the key points discussed in
           the survey.
         - A references section (named "References") that lists all the papers cited in
