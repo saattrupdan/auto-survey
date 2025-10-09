@@ -60,6 +60,8 @@ def write_literature_survey(
           first) for papers with the same first author.
         - All references in the References section must contain the authors, title of
           the paper, venue and year.
+        - There should only be references in the References section, do not add any
+          notes or comments in this section, or after it.
 
         Return only the Markdown content of the literature survey, without any
         additional commentary or explanation.
