@@ -17,8 +17,6 @@ from auto_survey.search import get_all_papers, is_relevant_paper
 from auto_survey.summarisation import summarise_paper
 from auto_survey.writing import write_literature_survey
 
-load_dotenv()
-
 logger = logging.getLogger("auto_survey")
 
 
@@ -98,6 +96,8 @@ def main(
         for logging_name in logging.root.manager.loggerDict:
             if logging_name != "auto_survey":
                 logging.getLogger(logging_name).setLevel(logging.CRITICAL)
+
+    load_dotenv()
 
     # Set up paths
     output_dir.mkdir(parents=True, exist_ok=True)
