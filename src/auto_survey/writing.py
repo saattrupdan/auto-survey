@@ -102,7 +102,7 @@ def write_literature_survey(
         ):
             papers_still_missing_citations.append(paper)
     if papers_still_missing_citations:
-        logger.warning(
+        logger.debug(
             f"There are {len(papers_still_missing_citations)} papers that are not "
             "cited in the literature survey. These papers will be omitted from the "
             "references section."

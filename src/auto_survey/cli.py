@@ -63,6 +63,13 @@ logger = logging.getLogger("auto_survey")
     show_default=True,
     help="The directory to save the output files.",
 )
+@click.option(
+    "--verbose/--no-verbose",
+    default=False,
+    show_default=True,
+    help="Whether to show verbose output, including debug information from "
+    "LiteLLM and other libraries.",
+)
 def main(
     topic: str,
     model: str,
@@ -70,15 +77,18 @@ def main(
     api_key_env_var: str | None,
     num_papers: int,
     output_dir: Path,
+    verbose: bool,
 ) -> None:
     """Conduct a literature survey based on the provided topic."""
     # Suppress logging, except for the AutoSurvey logger
-    litellm.suppress_debug_info = True
-    warnings.filterwarnings("ignore", category=UserWarning)
-    warnings.filterwarnings("ignore", category=FutureWarning)
-    for logging_name in logging.root.manager.loggerDict:
-        if logging_name != "auto_survey":
-            logging.getLogger(logging_name).setLevel(logging.CRITICAL)
+    if not verbose:
+        logger.setLevel(logging.DEBUG)
+        litellm.suppress_debug_info = True
+        warnings.filterwarnings("ignore", category=UserWarning)
+        warnings.filterwarnings("ignore", category=FutureWarning)
+        for logging_name in logging.root.manager.loggerDict:
+            if logging_name != "auto_survey":
+                logging.getLogger(logging_name).setLevel(logging.CRITICAL)
 
     # Set up paths
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -38,23 +38,23 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
                 break
             except httpx.HTTPStatusError as e:
                 if e.response.status_code == 403:
-                    logger.warning(
+                    logger.debug(
                         f"Access forbidden when trying to fetch PDF from {paper.url}."
                     )
                     break
-                logger.warning(
+                logger.debug(
                     f"Failed to fetch PDF from {paper.url}. The error was {e!r}. "
                     f"Retrying in a second..."
                 )
                 sleep(1)
             except httpx.ConnectError as e:
-                logging.warning(
+                logging.debug(
                     f"Connection error while trying to fetch PDF from {paper.url}. "
                     f"The error was {e!r}. Retrying in a second..."
                 )
                 sleep(1)
         else:
-            logger.warning(
+            logger.debug(
                 f"Failed to fetch PDF from {paper.url}, after {num_attempts} attempts."
             )
 
@@ -67,7 +67,7 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
             + "\n\n(...content truncated...)\n\n"
             + content[-half_length:]
         )
-        logger.warning(
+        logger.debug(
             f"The content from the PDF at {paper.url} was too long, so it was "
             "truncated."
         )

@@ -38,7 +38,7 @@ def get_all_papers(
         topic=topic, num_queries=10, litellm_config=litellm_config
     )
 
-    logger.info(f"Searching for papers on the topic {topic!r}...")
+    logger.info("Searching for papers...")
     offset = 0
     relevant_papers: list[Paper] = list()
     with tqdm(total=min_num_relevant_papers, desc="Relevant papers found") as pbar:
@@ -77,10 +77,7 @@ def get_all_papers(
             # Raise the offset to keep searching for papers with the same queries
             offset += batch_size
 
-    logger.info(
-        f"Found a total of {len(relevant_papers):,} relevant papers on the topic "
-        f"{topic!r}."
-    )
+    logger.info(f"Found a total of {len(relevant_papers):,} relevant papers.")
     return relevant_papers
 
 
@@ -223,7 +220,7 @@ def find_papers(query: str, num_results: int, offset: int = 0) -> list["Paper"] 
             follow_redirects=True,
         )
         if response.status_code == 429:
-            logger.warning(
+            logger.debug(
                 "Rate limit exceeded when querying Semantic Scholar API. "
                 "Waiting 10 seconds before retrying..."
             )
