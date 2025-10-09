@@ -77,7 +77,7 @@ questions or request for additional information.
 
 ### Your PR is merged
 
-Congratulations :tada::tada: The Auto Survey team thanks you :sparkles:.
+Congratulations :tada::tada: The AutoSurvey team thanks you :sparkles:.
 
 [1]: https://docs.github.com/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github
 [2]: https://docs.github.com/en/get-started/quickstart/set-up-git
