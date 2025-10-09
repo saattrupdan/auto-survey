@@ -9,7 +9,7 @@
 >
 </div>
 
-### Conduct your literature survey in 10 minutes for $0.05
+### Conduct your literature survey in 10 minutes for less than a dollar
 
 ______________________________________________________________________
 [![Code Coverage](https://img.shields.io/badge/Coverage-0%25-red.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
