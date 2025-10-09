@@ -84,7 +84,7 @@ Congratulations :tada::tada: The Auto Survey team thanks you :sparkles:.
 [3]: https://docs.github.com/en/get-started/quickstart/github-flow
 [4]: https://docs.github.com/en/github/collaborating-with-pull-requests
 [5]: https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests#search-by-the-title-body-or-comments
-[6]: https://github.com/alexandrainst/auto_survey/issues
+[6]: https://github.com/saattrupdan/auto-survey/issues
 [7]: https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/getting-started-with-github-desktop
 [8]: https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/cloning-and-forking-repositories-from-github-desktop
 [9]: https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#fork-an-example-repository

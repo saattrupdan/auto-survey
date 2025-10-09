@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/alexandrainst/auto_survey"
-Issues = "https://github.com/alexandrainst/auto_survey/issues"
+Repository = "https://github.com/saattrupdan/auto-survey"
+Issues = "https://github.com/saattrupdan/auto-survey/issues"
 
 [project.license]
 file = "LICENSE"
