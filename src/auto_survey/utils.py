@@ -1,20 +1,28 @@
 """Utility functions in the application."""
 
-from functools import partialmethod
+import os
+import sys
 
-from tqdm import tqdm
 
+class no_terminal_output:
+    """Context manager that suppresses all terminal output."""
 
-class no_progress_bars:
-    """Context manager that disables all `tqdm` progress bars."""
+    def __init__(self, disable: bool = False) -> None:
+        """Initialise the context manager.
 
-    def __init__(self) -> None:
-        """Initialise the context manager."""
-        self.old_init = tqdm.__init__
+        Args:
+            disable:
+                If True, this context manager does nothing.
+        """
+        self.disable = disable
+        self._original_stdout = sys.stdout
+        self._original_stderr = sys.stderr
 
     def __enter__(self) -> None:
-        """Disable all `tqdm` progress bars."""
-        tqdm.__init__ = partialmethod(tqdm.__init__, disable=True)  # type: ignore
+        """Suppress all terminal output."""
+        if not self.disable:
+            sys.stdout = open(os.devnull, "w")
+            sys.stderr = open(os.devnull, "w")
 
     def __exit__(
         self,
@@ -22,5 +30,9 @@ class no_progress_bars:
         exc_val: BaseException | None,
         exc_tb: type[BaseException] | None,
     ) -> None:
-        """Re-enable the progress bar."""
-        tqdm.__init__ = self.old_init
+        """Re-enable terminal output."""
+        if not self.disable:
+            sys.stdout.close()
+            sys.stderr.close()
+            sys.stdout = self._original_stdout
+            sys.stderr = self._original_stderr

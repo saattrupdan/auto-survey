@@ -130,7 +130,7 @@ def main(
         iterable=papers, desc="Summarising papers", unit="paper", ascii="—▰"
     ):
         paper.summary = summarise_paper(
-            paper=paper, topic=topic, litellm_config=litellm_config
+            paper=paper, topic=topic, verbose=verbose, litellm_config=litellm_config
         )
 
     # Check again that the papers are relevant using their summaries rather than

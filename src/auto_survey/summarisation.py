@@ -9,12 +9,14 @@ from docling.document_converter import DocumentConverter
 
 from auto_survey.data_models import LiteLLMConfig, Paper, Summary
 from auto_survey.llm import get_llm_completion
-from auto_survey.utils import no_progress_bars
+from auto_survey.utils import no_terminal_output
 
 logger = logging.getLogger("auto_survey")
 
 
-def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> str:
+def summarise_paper(
+    paper: Paper, topic: str, verbose: bool, litellm_config: LiteLLMConfig
+) -> str:
     """Summarise a paper where the summary focuses on a given topic.
 
     Args:
@@ -22,6 +24,8 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
             The paper to summarise.
         topic:
             The topic to focus the summary on.
+        verbose:
+            Whether to print verbose output.
         litellm_config:
             The LiteLLM configuration to use.
 
@@ -34,7 +38,7 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
     if paper.url != "":
         for _ in range(num_attempts := 3):
             try:
-                content = parse_pdf(pdf_url=paper.url)
+                content = parse_pdf(pdf_url=paper.url, verbose=verbose)
                 break
             except httpx.HTTPStatusError as e:
                 if e.response.status_code == 403:
@@ -112,12 +116,14 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
     return summary
 
 
-def parse_pdf(pdf_url: str) -> str:
+def parse_pdf(pdf_url: str, verbose: bool) -> str:
     """Parse the content of a PDF from a URL and convert it to Markdown.
 
     Args:
         pdf_url:
             The URL of the PDF to parse.
+        verbose:
+            Whether to print verbose output.
 
     Returns:
         The content of the PDF converted to Markdown.
@@ -139,7 +145,10 @@ def parse_pdf(pdf_url: str) -> str:
     response.raise_for_status()
 
     # Parse the raw PDF as Markdown
-    with tempfile.NamedTemporaryFile(mode="w+b") as temp_file, no_progress_bars():
+    with (
+        tempfile.NamedTemporaryFile(mode="w+b") as temp_file,
+        no_terminal_output(disable=verbose),
+    ):
         temp_file.write(response.content)
         temp_file.flush()
         result = DocumentConverter().convert(source=temp_file.name)
