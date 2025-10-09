@@ -92,7 +92,7 @@ def main(
 
     # Set up paths
     output_dir.mkdir(parents=True, exist_ok=True)
-    topic_filename = re.sub(r"[^a-z_]", "", topic.replace(" ", "_"))
+    topic_filename = re.sub(r"[^a-z_]", "", topic.replace(" ", "_").lower())
     markdown_path = output_dir / f"{topic_filename}_survey.md"
     pdf_path = output_dir / f"{topic_filename}_survey.pdf"
 
@@ -112,7 +112,9 @@ def main(
     )
 
     # Summarise each paper
-    for paper in tqdm(papers, desc="Summarising papers", unit="paper"):
+    for paper in tqdm(
+        iterable=papers, desc="Summarising papers", unit="paper", ascii="▱▰"
+    ):
         paper.summary = summarise_paper(
             paper=paper, topic=topic, litellm_config=litellm_config
         )
@@ -125,8 +127,8 @@ def main(
         if is_relevant_paper(paper=paper, topic=topic, litellm_config=litellm_config)
     ]
     logger.info(
-        f"After summarisation, {len(papers):,} papers continue to be relevant to the "
-        "topic."
+        f"After reading the full papers, {len(papers):,} papers continue to be "
+        "relevant to the topic."
     )
 
     # Write the literature survey to a Markdown file

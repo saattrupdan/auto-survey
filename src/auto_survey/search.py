@@ -38,11 +38,13 @@ def get_all_papers(
         topic=topic, num_queries=10, litellm_config=litellm_config
     )
 
-    logger.info("Searching for papers...")
     offset = 0
     relevant_papers: list[Paper] = list()
     with tqdm(
-        total=min_num_relevant_papers, desc="Relevant papers found", unit="paper"
+        total=min_num_relevant_papers,
+        desc="Searching for papers",
+        unit="paper",
+        ascii="▱▰",
     ) as pbar:
         while len(relevant_papers) < min_num_relevant_papers and queries:
             for query in queries:
@@ -79,7 +81,6 @@ def get_all_papers(
             # Raise the offset to keep searching for papers with the same queries
             offset += batch_size
 
-    logger.info(f"Found a total of {len(relevant_papers):,} relevant papers.")
     return relevant_papers
 
 
