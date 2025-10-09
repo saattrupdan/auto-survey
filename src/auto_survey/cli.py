@@ -10,7 +10,6 @@ from pathlib import Path
 import click
 import litellm
 from dotenv import load_dotenv
-from termcolor import colored
 from tqdm.auto import tqdm
 
 from auto_survey.data_models import LiteLLMConfig
@@ -20,9 +19,6 @@ from auto_survey.writing import write_literature_survey
 
 load_dotenv()
 
-# Set up logging
-fmt = f"[%(asctime)s]\n{colored('%(message)s', 'light_yellow')}\n"
-logging.basicConfig(level=logging.INFO, format=fmt, datefmt="%Y-%m-%d %H:%M:%S")
 logger = logging.getLogger("auto_survey")
 
 

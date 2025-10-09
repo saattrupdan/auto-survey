@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Now sets up logging in the `__init__` file. Previously it was set up in the main
+  script, which wasn't triggered properly when `auto-survey` was used with `uvx`.
+
 ## [v0.1.0] - 2025-10-09
 
 ### Added
