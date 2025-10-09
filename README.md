@@ -1,15 +1,3 @@
-<!-- This disables the "First line in file should be a top level heading" rule -->
-<!-- markdownlint-disable MD041 -->
-<a href="https://github.com/alexandrainst/auto_survey">
-<img
- src="https://filedn.com/lRBwPhPxgV74tO0rDoe8SpH/alexandra/alexandra-logo.jpeg"
- width="239"
- height="175"
- align="right"
- alt="Alexandra Institute Logo"
-/>
-</a>
-
 # AutoSurvey
 
 Automated literature surveys.
@@ -25,7 +13,7 @@ Developer:
 
 - Dan Saattrup Smart (<saattrupdan@gmail.com>)
 
-## Quickstart
+## Getting Started
 
 ### Get a Semantic Scholar API key
 
@@ -47,6 +35,25 @@ The /paper/search endpoint.
 Around 100 requests per day.
 ```
 
+When you have it, you create a file called `.env` in your current directory with the
+following content:
+
+```text
+SEMANTIC_SCHOLAR_API_KEY="<your key here>"
+```
+
+If you already had a `.env` file, you can just append the line above to it.
+
+### Set up an LLM API key
+
+Next, you need to set up an API key for the large language model (LLM) that you want to
+use. The default model is `gpt-4.1-mini` from OpenAI, which requires you to have an OpenAI
+API key, and again add it to your `.env` file:
+
+```text
+OPENAI_API_KEY="<your key here>"
+```
+
 ### Installing and Running
 
 The easiest way to use the package is as a
@@ -63,3 +70,45 @@ options are listed below, but you can always get these by running the following 
 ```bash
 uvx auto-survey --help
 ```
+
+## Using Different Model Providers
+
+The package supports all of [LiteLLM's
+providers](https://docs.litellm.ai/docs/providers/), including OpenAI, Anthropic,
+Google, xAI, local models, and more. You can simply set the `--model` argument to the
+model you want to use. For example, to use Claude Sonnet 4.5 from Anthropic, use
+
+```bash
+uvx auto-survey "<your topic here>" --model "claude-sonnet-4-5"
+```
+
+Some providers require you to prefix the model ID with the provider name. For instance,
+to use the Grok-3-mini model from xAI, you need to use
+
+```bash
+uvx auto-survey "<your topic here>" --model "xai/grok-3-mini"
+```
+
+All of this is documented in the [LiteLLM provider
+documentation](https://docs.litellm.ai/docs/providers). If you use a different provider,
+you need to set different environment variables. See the [LiteLLM provider
+documentation](https://docs.litellm.ai/docs/providers) for more information on which
+environment variables to set.
+
+### Custom Inference API
+
+You can also run the package with a custom inference API. In this case you need to set
+the `--base-url` argument with the URL to the inference API, and also set the
+`--api-key-env-var` argument with the name of the environment variable that contains the
+API key for the inference API. This variable must again be set in the `.env` file:
+
+```text
+<value-of-api-key-env-var>="<your key here>"
+```
+
+Lastly, when using custom inference APIs, you need to use a custom prefix as well,
+dependending on what kind of inference server you're using. If it is running with vLLM,
+you need to use the `hosted_vllm/` prefix, for instance, and Ollama models use the
+`ollama_chat/` prefix. See the [LiteLLM provider
+documentation](https://docs.litellm.ai/docs/providers) for more information on which
+prefixes to use.

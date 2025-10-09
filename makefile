@@ -1,6 +1,6 @@
 # This ensures that we can call `make <target>` even if `<target>` exists as a file or
 # directory.
-.PHONY: docs help
+.PHONY: help
 
 # Exports all variables defined in the makefile available to scripts
 .EXPORT_ALL_VARIABLES:
@@ -70,23 +70,6 @@ setup-git:
 	@git config --local user.name "${GIT_NAME}"
 	@git config --local user.email "${GIT_EMAIL}"
 
-add-repo-to-git:
-	@if [ ! "$(shell git status --short)" = "" ] && [ "$(shell git --no-pager log --all | sed 's/`//g')" = "" ]; then \
-		git add .; \
-		git commit --quiet -m "Initial commit"; \
-	fi
-	@if [ "$(shell git remote)" = "" ]; then \
-		git remote add origin git@github.com:alexandrainst/auto_survey.git; \
-	fi
-
-docs:  ## View documentation locally
-	@echo "Viewing documentation - run 'make publish-docs' to publish the documentation website."
-	@uv run mkdocs serve
-
-publish-docs:  ## Publish documentation to GitHub Pages
-	@uv run mkdocs gh-deploy
-	@echo "Updated documentation website: https://alexandrainst.github.io/auto_survey"
-
 test:  ## Run tests
 	@uv run pytest && uv run readme-cov
 
@@ -131,7 +114,6 @@ publish:
 		echo "Publishing to PyPI..."; \
 		$(MAKE) --quiet publish-euroeval \
 			&& $(MAKE) --quiet publish-scandeval \
-			&& $(MAKE) --quiet publish-docs \
 			&& $(MAKE) --quiet add-dev-version \
 			&& echo "Published!"; \
 	fi
