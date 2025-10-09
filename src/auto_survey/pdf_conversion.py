@@ -4,8 +4,6 @@ import logging
 import subprocess
 from pathlib import Path
 
-from weasyprint.logger import capture_logs
-
 from auto_survey.utils import no_terminal_output
 
 logger = logging.getLogger("auto_survey")
@@ -87,10 +85,7 @@ def convert_markdown_file_to_pdf(markdown_path: Path, verbose: bool) -> bool:
         logger.debug(
             f"Running Pandoc to convert the Markdown to PDF at {pdf_path.as_posix()}..."
         )
-        with (
-            no_terminal_output(disable=verbose),
-            capture_logs(logger="weasyprint" if not verbose else None),
-        ):
+        with no_terminal_output(disable=verbose):
             pandoc_command = [
                 "pandoc",
                 "--from=markdown",
