@@ -25,7 +25,7 @@ def write_literature_survey(
     Returns:
         The literature survey, as a Markdown string.
     """
-    logger.info(f"Writing literature survey on topic {topic!r}...")
+    logger.info("Writing literature survey based on the papers...")
 
     system_prompt = """
         You are an expert academic researcher and writer.
