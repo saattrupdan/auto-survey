@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- The environment variables where not correctly loaded from the `.env` file. This has
+  been fixed now.
+
 ## [v0.1.1] - 2025-10-09
 
 ### Fixed

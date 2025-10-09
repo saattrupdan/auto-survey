@@ -9,7 +9,6 @@ from pathlib import Path
 
 import click
 import litellm
-from dotenv import load_dotenv
 from tqdm.auto import tqdm
 
 from auto_survey.data_models import LiteLLMConfig
@@ -96,8 +95,6 @@ def main(
         for logging_name in logging.root.manager.loggerDict:
             if logging_name != "auto_survey":
                 logging.getLogger(logging_name).setLevel(logging.CRITICAL)
-
-    load_dotenv()
 
     # Set up paths
     output_dir.mkdir(parents=True, exist_ok=True)
