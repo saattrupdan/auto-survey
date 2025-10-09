@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   describing how to install these.
 - We've added a logo now, and hidden many of the logs. These can be shown with the
   `--verbose` flag.
+- Removed URLs from the references in the References section.
 
 ### Fixed
 

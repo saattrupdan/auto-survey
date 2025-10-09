@@ -59,7 +59,7 @@ def write_literature_survey(
           by the surname of the first author, and then by year of publication (earliest
           first) for papers with the same first author.
         - All references in the References section must contain the authors, title of
-          the paper, venue, year, and URL (if available).
+          the paper, venue and year.
 
         Return only the Markdown content of the literature survey, without any
         additional commentary or explanation.
