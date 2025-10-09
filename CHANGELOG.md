@@ -20,8 +20,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fixed a bug related to the parsing of the PDFs of some papers, due to the file not
   ending in `.pdf`. This has been fixed now.
-- We now catch `ConversionError` during parsing of PDF files, and skip those files
-  instead of crashing.
+- We now catch `docling.ConversionError` during parsing of PDF files, and skip those
+  files instead of crashing.
+- We now catch all `httpx.RequestError` during fetching of PDF files, and skip those
+  files instead of crashing.
 - We now use `docling>=2.55.0` as errors appeared in earlier versions, as they
   refactored their code base.
 - PDF conversion of the generated Markdown file sometimes failed due to some unicode

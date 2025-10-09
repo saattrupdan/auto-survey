@@ -52,7 +52,7 @@ def summarise_paper(
                     f"Retrying in a second..."
                 )
                 sleep(1)
-            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
+            except httpx.RequestError as e:
                 logging.debug(
                     f"Connection error while trying to fetch PDF from {paper.url}. "
                     f"The error was {e!r}. Retrying in a second..."
