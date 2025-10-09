@@ -41,7 +41,9 @@ def get_all_papers(
     logger.info("Searching for papers...")
     offset = 0
     relevant_papers: list[Paper] = list()
-    with tqdm(total=min_num_relevant_papers, desc="Relevant papers found") as pbar:
+    with tqdm(
+        total=min_num_relevant_papers, desc="Relevant papers found", unit="paper"
+    ) as pbar:
         while len(relevant_papers) < min_num_relevant_papers and queries:
             for query in queries:
                 # Find papers for the current query. If this returns None, it means that
