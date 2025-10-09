@@ -36,6 +36,13 @@ install: ## Install dependencies
 	@echo "Installed the 'auto_survey' project! You can now activate your virtual environment with 'source .venv/bin/activate'."
 	@echo "Note that this is a 'uv' project. Use 'uv add <package>' to install new dependencies and 'uv remove <package>' to remove them."
 
+install-non-interactive:
+	@$(MAKE) --quiet install-uv
+	@$(MAKE) --quiet install-dependencies
+	@$(MAKE) --quiet setup-environment-variables-non-interactive
+	@$(MAKE) --quiet setup-git
+	@$(MAKE) --quiet install-pre-commit
+
 install-uv:
 	@if [ "$(shell which uv)" = "" ]; then \
 		if [ "$(shell which rustup)" = "" ]; then \
