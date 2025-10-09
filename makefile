@@ -111,10 +111,11 @@ publish:
 		echo "No PyPI API token specified in the '.env' file, so cannot publish."; \
 	else \
 		echo "Publishing to PyPI..."; \
-		$(MAKE) --quiet publish-euroeval \
-			&& $(MAKE) --quiet publish-scandeval \
-			&& $(MAKE) --quiet add-dev-version \
-			&& echo "Published!"; \
+		rm -rf build/ dist/; \
+		uv build; \
+		uv publish --username "__token__" --password ${PYPI_API_TOKEN}; \
+		$(MAKE) --quiet add-dev-version; \
+		echo "Published!"; \
 	fi
 
 publish-major: install check bump-major publish  ## Publish a major version
