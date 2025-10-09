@@ -4,10 +4,10 @@ version = "0.0.0"
 description = "Automated literature surveys."
 readme = "README.md"
 authors = [
-    {name = "Dan Saattrup Smart", email = "dan.smart@alexandra.dk"},
+    {name = "Dan Saattrup Smart", email = "saattrupdan@gmail.com"},
 ]
 maintainers = [
-    {name = "Dan Saattrup Smart", email = "dan.smart@alexandra.dk"},
+    {name = "Dan Saattrup Smart", email = "saattrupdan@gmail.com"},
 ]
 requires-python = ">=3.11,<4.0"
 dependencies = [
@@ -27,7 +27,7 @@ Issues = "https://github.com/alexandrainst/auto_survey/issues"
 file = "LICENSE"
 
 [project.scripts]
-conduct-survey = "auto_survey.cli:main"
+auto-survey = "auto_survey.cli:main"
 
 [dependency-groups]
 dev = [
