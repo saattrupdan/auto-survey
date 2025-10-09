@@ -35,7 +35,9 @@ def write_literature_survey(
         and written in clear, concise English.
 
         The literature survey should be formatted in Markdown, with appropriate
-        headings, subheadings, and paragraphs.
+        headings, subheadings, and paragraphs. Rather than simply listing each paper
+        summary one after the other, you should synthesise the information from the
+        papers to provide a coherent overview of the topic.
 
         The survey should include:
         - An introduction to the topic (named "Introduction"), explaining its
