@@ -152,7 +152,9 @@ def main(
         topic=topic, relevant_papers=papers, litellm_config=litellm_config
     )
     markdown_path.write_text(literature_survey)
-    logger.info(f"Markdown: {markdown_path.as_posix()}")
+
+    logger.info("All done! 🎉")
+    logger.info(f"Here is the survey in Markdown format: {markdown_path.as_posix()}")
 
     # Convert the Markdown to PDF using Pandoc
     pandoc_installed = (
@@ -204,7 +206,7 @@ def main(
             encoding="utf-8",
             check=True,
         )
-        logger.info(f"PDF: {pdf_path.as_posix()}")
+        logger.info(f"Here is the corresponding PDF: {pdf_path.as_posix()}")
 
 
 if __name__ == "__main__":
