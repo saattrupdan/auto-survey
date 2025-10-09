@@ -79,29 +79,25 @@ def convert_markdown_file_to_pdf(markdown_path: Path, verbose: bool) -> bool:
     markdown = markdown_path.read_text(encoding="utf-8")
     logger.debug(f"Successfully read the Markdown file at {markdown_path.as_posix()}.")
 
+    logger.debug(
+        f"Running Pandoc to convert the Markdown to PDF at {pdf_path.as_posix()}..."
+    )
+    pandoc_command = [
+        "pandoc",
+        "--from=markdown",
+        "--to=pdf",
+        f"--output={pdf_path}",
+        "--pdf-engine=weasyprint",
+    ]
+    if not verbose:
+        pandoc_command.append("--pdf-engine-opt=--quiet")
     try:
-        logger.debug(
-            f"Running Pandoc to convert the Markdown to PDF at {pdf_path.as_posix()}..."
-        )
-        subprocess.run(
-            [
-                "pandoc",
-                "--from=markdown",
-                "--to=pdf",
-                f"--output={pdf_path}",
-                "--pdf-engine=weasyprint",
-                "--pdf-engine-opt=--quiet",
-            ],
-            input=markdown,
-            encoding="utf-8",
-            check=True,
-        )
+        subprocess.run(pandoc_command, input=markdown, encoding="utf-8", check=True)
     except subprocess.CalledProcessError as e:
+        command_str = f"`{' '.join(pandoc_command)} {markdown_path.as_posix()}`"
         logger.error(
             f"Failed to convert the Markdown to PDF. The error was {e!r}. You can "
-            f"try to do this manually by running "
-            f"`pandoc --from=markdown --to=pdf --output={pdf_path.as_posix()} "
-            f"--pdf-engine=weasyprint {markdown_path.as_posix()}` in your terminal."
+            f"try to do this manually by running {command_str} in your terminal."
         )
         return False
 
