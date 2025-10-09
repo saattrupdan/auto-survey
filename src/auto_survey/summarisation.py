@@ -6,6 +6,7 @@ from time import sleep
 
 import httpx
 from docling.document_converter import DocumentConverter
+from docling.exceptions import ConversionError  # type: ignore[import]
 
 from auto_survey.data_models import LiteLLMConfig, Paper, Summary
 from auto_survey.llm import get_llm_completion
@@ -57,6 +58,12 @@ def summarise_paper(
                     f"The error was {e!r}. Retrying in a second..."
                 )
                 sleep(1)
+            except ConversionError as e:
+                logger.debug(
+                    f"Failed to convert PDF from {paper.url} to Markdown. The error "
+                    f"was {e!r}."
+                )
+                break
         else:
             logger.debug(
                 f"Failed to fetch PDF from {paper.url}, after {num_attempts} attempts."

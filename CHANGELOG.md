@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fixed a bug related to the parsing of the PDFs of some papers, due to the file not
   ending in `.pdf`. This has been fixed now.
+- We now catch `ConversionError` during parsing of PDF files, and skip those files
+  instead of crashing.
 
 ## [v0.1.2] - 2025-10-09
 
