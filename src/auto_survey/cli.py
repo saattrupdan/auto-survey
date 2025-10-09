@@ -113,7 +113,7 @@ def main(
 
     # Summarise each paper
     for paper in tqdm(
-        iterable=papers, desc="Summarising papers", unit="paper", ascii="▱▰"
+        iterable=papers, desc="Summarising papers", unit="paper", ascii="—▰"
     ):
         paper.summary = summarise_paper(
             paper=paper, topic=topic, litellm_config=litellm_config

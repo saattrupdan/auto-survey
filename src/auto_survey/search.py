@@ -38,7 +38,7 @@ def get_all_papers(
     offset = 0
     relevant_papers: list[Paper] = list()
     with tqdm(
-        total=num_relevant_papers, desc="Searching for papers", unit="paper", ascii="▱▰"
+        total=num_relevant_papers, desc="Searching for papers", unit="paper", ascii="—▰"
     ) as pbar:
         while len(relevant_papers) < num_relevant_papers and queries:
             for query in queries:
