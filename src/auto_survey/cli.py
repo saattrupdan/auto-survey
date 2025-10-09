@@ -31,21 +31,21 @@ logger = logging.getLogger("auto_survey")
 @click.option(
     "--model",
     type=str,
-    default="hosted_vllm/synquid/gemma-3-27b-it-FP8",
+    default="gpt-4.1-mini",
     show_default=True,
     help="The model ID to use.",
 )
 @click.option(
     "--base-url",
     type=str,
-    default="https://inference.projects.alexandrainst.dk/v1",
+    default=None,
     show_default=True,
     help="The API base URL for the model, if a custom inference server is used. Can be "
     "None if not needed.",
 )
 @click.option(
     "--api-key-env-var",
-    type=str,
+    type=None,
     default="INFERENCE_SERVER_API_KEY",
     help="The API key for the model.",
 )
