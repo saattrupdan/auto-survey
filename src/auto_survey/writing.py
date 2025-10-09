@@ -94,51 +94,59 @@ def write_literature_survey(
     papers_missing_citations: list[Paper] = []
     for paper in relevant_papers:
         citation_in_parens = paper.get_citation(in_parens=True)
-        citation_not_in_parens = paper.get_citation(in_parens=False)
+        citation_without_any_parens = citation_in_parens[1:-1]
+        citation_with_year_in_parens = paper.get_citation(in_parens=False)
         if (
             citation_in_parens not in literature_survey
-            and citation_not_in_parens not in literature_survey
+            and citation_without_any_parens not in literature_survey
+            and citation_with_year_in_parens not in literature_survey
         ):
             papers_missing_citations.append(paper)
 
     # If there are any smissing citations, log a warning and remove them from the
     # references section
-    papers_still_missing_citations: list[Paper] = []
-    for paper in relevant_papers:
-        citation_in_parens = paper.get_citation(in_parens=True)
-        citation_not_in_parens = paper.get_citation(in_parens=False)
-        if (
-            citation_in_parens not in literature_survey
-            and citation_not_in_parens not in literature_survey
-        ):
-            papers_still_missing_citations.append(paper)
-    if papers_still_missing_citations:
-        logger.debug(
-            f"There are {len(papers_still_missing_citations)} papers that are not "
-            "cited in the literature survey. These papers will be omitted from the "
-            "references section."
-        )
-        content_part, references_part = literature_survey.rsplit("## References", 1)
-        references_lines = references_part.strip().splitlines()
+    if papers_missing_citations:
+        if "## References" not in literature_survey:
+            logger.debug(
+                f"There are {len(papers_missing_citations)} papers that are not "
+                "cited in the literature survey. However, the survey does not contain "
+                "a '## References' section, so the missing citations cannot be "
+                "removed."
+            )
+        else:
+            logger.debug(
+                f"There are {len(papers_missing_citations)} papers that are not "
+                "cited in the literature survey. These papers will be omitted from the "
+                "references section."
+            )
 
-        lines_to_remove = set()
-        for paper in papers_still_missing_citations:
-            line_idxs = [
-                i
+            # Extract the lines in the references section
+            content_part, references_part = literature_survey.rsplit("## References", 1)
+            references_lines = references_part.strip().splitlines()
+
+            # Remove the lines corresponding to the missing citations
+            lines_to_remove = set()
+            for paper in papers_missing_citations:
+                line_idxs = [
+                    i
+                    for i, line in enumerate(references_lines)
+                    if re.search(rf"\b{re.escape(paper.title)}\b", line)
+                ]
+                lines_to_remove.update(line_idxs)
+            references_lines = [
+                line
                 for i, line in enumerate(references_lines)
-                if re.search(rf"\b{re.escape(paper.title)}\b", line)
+                if i not in lines_to_remove
             ]
-            lines_to_remove.update(line_idxs)
-        references_lines = [
-            line for i, line in enumerate(references_lines) if i not in lines_to_remove
-        ]
+            corrected_references_part = re.sub(
+                r"\n{2,}", "\n\n", "\n".join(references_lines)
+            ).strip()
 
-        corrected_references_part = re.sub(
-            r"\n{2,}", "\n\n", "\n".join(references_lines)
-        ).strip()
-
-        literature_survey = (
-            content_part.strip() + "\n\n## References\n\n" + corrected_references_part
-        )
+            # Reconstruct the literature survey
+            literature_survey = (
+                content_part.strip()
+                + "\n\n## References\n\n"
+                + corrected_references_part.strip()
+            )
 
     return literature_survey

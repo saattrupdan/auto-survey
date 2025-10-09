@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   instead of crashing.
 - We now use `docling>=2.55.0` as errors appeared in earlier versions, as they
   refactored their code base.
+- PDF conversion of the generated Markdown file sometimes failed due to some unicode
+  symbols that were not converted to LaTeX properly. We now use the `pylatexenc` package
+  to handle this.
 
 ## [v0.1.2] - 2025-10-09
 

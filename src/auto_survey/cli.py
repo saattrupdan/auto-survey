@@ -9,6 +9,7 @@ from pathlib import Path
 
 import click
 import litellm
+from pylatexenc.latexencode import unicode_to_latex
 from termcolor import colored
 from tqdm.auto import tqdm
 
@@ -200,6 +201,12 @@ def main(
             f"{markdown_path.as_posix()}` in your terminal."
         )
     else:
+        # Convert unicode symbols in the literature survey to LaTeX commands, since this
+        # is required by Pandoc to convert to PDF with the (default) PDFLaTeX engine
+        literature_survey = unicode_to_latex(
+            literature_survey, unknown_char_policy="replace", unknown_char_warning=False
+        )
+
         subprocess.run(
             ["pandoc", "--from=markdown", "--to=pdf", f"--output={pdf_path}"],
             input=literature_survey,
