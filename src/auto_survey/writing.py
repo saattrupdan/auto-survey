@@ -53,6 +53,11 @@ def write_literature_survey(
           "(Author1 and Author2, Year)". If there are 3 or more authors use "Author1 et
           al. (Year)" or "(Author1 et al., Year)". All references in the References
           section should be separated by double newlines.
+        - In the References section, the papers should be listed in alphabetical order
+          by the surname of the first author, and then by year of publication (earliest
+          first) for papers with the same first author.
+        - All references in the References section must contain the authors, title of
+          the paper, venue, year, and URL (if available).
 
         Return only the Markdown content of the literature survey, without any
         additional commentary or explanation.
