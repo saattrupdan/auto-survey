@@ -80,7 +80,7 @@ class Paper(BaseModel):
             entry += f" {self.title.title()}."
 
         if self.venue:
-            entry += f" _{self.venue}_."
+            entry += f" _{self.venue.title()}_."
 
         return entry.strip()
 
