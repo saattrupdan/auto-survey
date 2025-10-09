@@ -62,6 +62,28 @@ class Paper(BaseModel):
         else:
             return f"{author_str} ({year_str})"
 
+    def references_entry(self) -> str:
+        """Format the paper as an APA style reference entry.
+
+        Returns:
+            The reference entry.
+        """
+        entry = ""
+
+        authors_str = " and ".join(str(author) for author in self.authors)
+        entry += authors_str if authors_str else "Unknown Author"
+
+        year_str = str(self.year) if self.year != -1 else "n.d."
+        entry += f" ({year_str})."
+
+        if self.title:
+            entry += f" {self.title.title()}."
+
+        if self.venue:
+            entry += f" _{self.venue}_."
+
+        return entry.strip()
+
     def __eq__(self, other: object) -> bool:
         """Check if two Paper instances are equal based on their attributes.
 
@@ -133,6 +155,21 @@ class Author(BaseModel):
 
     first_name: str
     last_name: str
+
+    def __str__(self) -> str:
+        """String representation of the author.
+
+        Returns:
+            The string representation.
+        """
+        string = ""
+        if self.last_name:
+            string += self.last_name
+        if self.first_name:
+            if string:
+                string += ", "
+            string += self.first_name
+        return string if string else "Unknown Author"
 
     def __eq__(self, other: object) -> bool:
         """Check if two Author instances are equal based on their attributes.
