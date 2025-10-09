@@ -155,7 +155,7 @@ def main(
 
     # Save the literature survey in Markdown format and convert to PDF
     markdown_path.write_text(literature_survey)
-    convert_markdown_file_to_pdf(markdown_path=markdown_path)
+    convert_markdown_file_to_pdf(markdown_path=markdown_path, verbose=verbose)
     logger.info(f"Here is the survey in Markdown format: {markdown_path.as_posix()}")
     logger.info(f"Here is the corresponding PDF: {pdf_path.as_posix()}")
 
