@@ -3,11 +3,9 @@
 import logging
 import os
 import re
-import warnings
 from pathlib import Path
 
 import click
-import litellm
 from termcolor import colored
 from tqdm.auto import tqdm
 
@@ -90,13 +88,6 @@ def main(
     """Conduct a literature survey based on the provided topic."""
     if verbose:
         logger.setLevel(logging.DEBUG)
-    else:
-        litellm.suppress_debug_info = True
-        warnings.filterwarnings("ignore", category=UserWarning)
-        warnings.filterwarnings("ignore", category=FutureWarning)
-        for logging_name in logging.root.manager.loggerDict:
-            if logging_name != "auto_survey":
-                logging.getLogger(logging_name).setLevel(logging.CRITICAL)
 
     # Set up paths
     output_dir.mkdir(parents=True, exist_ok=True)
