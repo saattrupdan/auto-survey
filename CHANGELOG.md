@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   ending in `.pdf`. This has been fixed now.
 - We now catch `ConversionError` during parsing of PDF files, and skip those files
   instead of crashing.
+- We now use `docling>=2.55.0` as errors appeared in earlier versions, as they
+  refactored their code base.
 
 ## [v0.1.2] - 2025-10-09
 
