@@ -21,12 +21,8 @@ from auto_survey.writing import write_literature_survey
 load_dotenv()
 
 # Set up logging
-fmt = colored("%(asctime)s", "light_blue") + " ⋅ " + colored("%(message)s", "green")
+fmt = f"[%(asctime)s]\n{colored('%(message)s', 'light_yellow')}\n"
 logging.basicConfig(level=logging.INFO, format=fmt, datefmt="%Y-%m-%d %H:%M:%S")
-
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
 logger = logging.getLogger("auto_survey")
 
 
