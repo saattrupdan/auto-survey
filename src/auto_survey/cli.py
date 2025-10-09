@@ -44,10 +44,7 @@ logger = logging.getLogger("auto_survey")
     "None if not needed.",
 )
 @click.option(
-    "--api-key-env-var",
-    type=None,
-    default="INFERENCE_SERVER_API_KEY",
-    help="The API key for the model.",
+    "--api-key-env-var", type=str, default=None, help="The API key for the model."
 )
 @click.option(
     "--num-papers",
