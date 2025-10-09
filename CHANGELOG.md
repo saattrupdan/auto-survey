@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.1.1] - 2025-10-09
+
 ### Fixed
 
 - Now sets up logging in the `__init__` file. Previously it was set up in the main
