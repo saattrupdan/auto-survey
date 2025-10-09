@@ -149,9 +149,8 @@ def is_relevant_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -
     """
     system_prompt = """
         You are an expert academic researcher. Your task is to determine whether a given
-        academic paper is relevant to a specified topic.
-
-        Err on the side of including a paper if you are unsure about its relevance.
+        academic paper is relevant to a specified topic. If it is not directly relevant
+        to the topic, but is related to a closely related topic, consider it relevant.
 
         You will be provided with the title and summary of the paper, as well as the
         topic. Your response should be a JSON object with a single key 'is_relevant'
