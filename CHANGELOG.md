@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- We now re-create the References section manually, which ensures consistent formatting,
+  correct alphabetical order, and only includes references that were actually cited in
+  the literature survey.
 - We've added a logo now, and hidden many of the logs. These can be shown with the
   `--verbose` flag.
-- Removed URLs from the references in the References section.
 - We now use the WeasyPrint PDF engine when converting the Markdown literature survey to
   PDF rather than PDFLaTeX, as the latter often had issues with Unicode characters.
 - We now check whether `pandoc` and `weasyprint` are installed before attempting to
