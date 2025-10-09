@@ -57,6 +57,20 @@ logger = logging.getLogger("auto_survey")
     help="The number of relevant papers to find.",
 )
 @click.option(
+    "--num-queries",
+    type=int,
+    default=10,
+    show_default=True,
+    help="The number of queries to generate for searching for papers.",
+)
+@click.option(
+    "--search-batch-size",
+    type=int,
+    default=5,
+    show_default=True,
+    help="The number of papers to fetch in each batch when searching for papers.",
+)
+@click.option(
     "--output-dir",
     type=click.Path(file_okay=False, dir_okay=True, writable=True, path_type=Path),
     default=Path("auto_survey_reports"),
@@ -76,6 +90,8 @@ def main(
     base_url: str | None,
     api_key_env_var: str | None,
     num_papers: int,
+    num_queries: int,
+    search_batch_size: int,
     output_dir: Path,
     verbose: bool,
 ) -> None:
@@ -107,7 +123,8 @@ def main(
     papers = get_all_papers(
         topic=topic,
         num_relevant_papers=num_papers,
-        batch_size=5,
+        num_queries=num_queries,
+        batch_size=search_batch_size,
         litellm_config=litellm_config,
     )
 

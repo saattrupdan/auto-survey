@@ -14,7 +14,11 @@ logger = logging.getLogger("auto_survey")
 
 
 def get_all_papers(
-    topic: str, num_relevant_papers: int, batch_size: int, litellm_config: LiteLLMConfig
+    topic: str,
+    num_relevant_papers: int,
+    num_queries: int,
+    batch_size: int,
+    litellm_config: LiteLLMConfig,
 ) -> list[Paper]:
     """Get a list of relevant papers on a given topic.
 
@@ -23,6 +27,8 @@ def get_all_papers(
             The topic to search for.
         num_relevant_papers:
             The number of relevant papers to find.
+        num_queries:
+            The number of queries to generate.
         batch_size:
             The number of papers to fetch in each batch.
         litellm_config:
@@ -32,7 +38,7 @@ def get_all_papers(
         A list of relevant papers.
     """
     queries = get_list_of_queries(
-        topic=topic, num_queries=10, litellm_config=litellm_config
+        topic=topic, num_queries=num_queries, litellm_config=litellm_config
     )
 
     offset = 0
