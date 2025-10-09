@@ -12,6 +12,7 @@ import litellm
 from termcolor import colored
 from tqdm.auto import tqdm
 
+from auto_survey.ascii import ASCII_LOGO
 from auto_survey.data_models import LiteLLMConfig
 from auto_survey.search import get_all_papers, is_relevant_paper
 from auto_survey.summarisation import summarise_paper
@@ -109,6 +110,9 @@ def main(
         base_url=base_url,
         api_key=os.getenv(api_key_env_var) if api_key_env_var else None,
     )
+
+    # Show ASCII logo
+    logger.info(ASCII_LOGO)
 
     # Search for relevant papers
     papers = get_all_papers(

@@ -1,6 +1,15 @@
-# AutoSurvey
+<!-- This disables the requirement that the first line is a top-level heading -->
+<!-- markdownlint-configure-file { "MD041": false } -->
 
-Conduct your literature survey in 10 minutes for $0.05.
+<div align='center'>
+<img
+    src="https://raw.githubusercontent.com/saattrupdan/auto-survey/main/gfx/auto-survey-logo.png"
+    height="312"
+    width="1662"
+>
+</div>
+
+### Conduct your literature survey in 10 minutes for $0.05
 
 ______________________________________________________________________
 [![Code Coverage](https://img.shields.io/badge/Coverage-0%25-red.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
