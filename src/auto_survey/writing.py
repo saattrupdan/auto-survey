@@ -66,6 +66,7 @@ def write_literature_survey(
     """.strip()
 
     # Remove URLs from the papers, to avoid URLs cluttering the references
+    logger.debug("Removing URLs from the papers to avoid cluttering the references...")
     for paper in relevant_papers:
         paper.url = ""
 

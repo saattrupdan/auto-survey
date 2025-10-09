@@ -38,6 +38,10 @@ def get_all_papers(
     Returns:
         A list of relevant papers.
     """
+    logger.debug(
+        f"Searching for {num_relevant_papers} relevant papers on the topic {topic!r}..."
+    )
+
     queries = get_list_of_queries(
         topic=topic, num_queries=num_queries, litellm_config=litellm_config
     )
@@ -53,6 +57,10 @@ def get_all_papers(
     ) as pbar:
         while len(relevant_papers) < num_relevant_papers and queries:
             for query in queries:
+                logger.debug(
+                    f"Searching for papers with query {query!r} (offset {offset})..."
+                )
+
                 # Find papers for the current query. If this returns None, it means that
                 # the offset is too high, so we remove the query from the list of
                 # queries.

@@ -4,19 +4,24 @@ import logging
 import subprocess
 from pathlib import Path
 
+from auto_survey.utils import no_terminal_output
+
 logger = logging.getLogger("auto_survey")
 
 
-def convert_markdown_file_to_pdf(markdown_path: Path) -> bool:
+def convert_markdown_file_to_pdf(markdown_path: Path, verbose: bool) -> bool:
     """Convert a Markdown file to PDF using Pandoc.
 
     Args:
         markdown_path:
             The path to the Markdown file.
+        verbose:
+            Whether to print verbose output.
 
     Returns:
         Whether the conversion was successful.
     """
+    logger.debug(f"Converting the Markdown at {markdown_path.as_posix()} to PDF...")
     pdf_path = markdown_path.with_suffix(".pdf")
 
     # Raise an error if Pandoc and/or WeasyPrint are not installed
@@ -72,21 +77,27 @@ def convert_markdown_file_to_pdf(markdown_path: Path) -> bool:
             return False
 
     # Read the Markdown file
+    logger.debug(f"Reading the Markdown file at {markdown_path.as_posix()}...")
     markdown = markdown_path.read_text(encoding="utf-8")
+    logger.debug(f"Successfully read the Markdown file at {markdown_path.as_posix()}.")
 
     try:
-        subprocess.run(
-            [
-                "pandoc",
-                "--from=markdown",
-                "--to=pdf",
-                f"--output={pdf_path}",
-                "--pdf-engine=weasyprint",
-            ],
-            input=markdown,
-            encoding="utf-8",
-            check=True,
+        logger.debug(
+            f"Running Pandoc to convert the Markdown to PDF at {pdf_path.as_posix()}..."
         )
+        with no_terminal_output(disable=verbose):
+            subprocess.run(
+                [
+                    "pandoc",
+                    "--from=markdown",
+                    "--to=pdf",
+                    f"--output={pdf_path}",
+                    "--pdf-engine=weasyprint",
+                ],
+                input=markdown,
+                encoding="utf-8",
+                check=True,
+            )
     except subprocess.CalledProcessError as e:
         logger.error(
             f"Failed to convert the Markdown to PDF. The error was {e!r}. You can "
@@ -96,4 +107,7 @@ def convert_markdown_file_to_pdf(markdown_path: Path) -> bool:
         )
         return False
 
+    logger.debug(
+        f"Successfully converted the Markdown to PDF at {pdf_path.as_posix()}."
+    )
     return pdf_path.exists()

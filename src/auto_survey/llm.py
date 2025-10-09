@@ -1,5 +1,6 @@
 """Getting completions from a large language model."""
 
+import logging
 import typing as t
 
 import litellm
@@ -7,6 +8,8 @@ from litellm.types.utils import ModelResponse
 from pydantic import BaseModel
 
 from auto_survey.data_models import LiteLLMConfig
+
+logger = logging.getLogger("auto_survey")
 
 
 def get_llm_completion(
