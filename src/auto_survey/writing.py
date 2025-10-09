@@ -47,20 +47,12 @@ def write_literature_survey(
           relevant to the topic.
         - A conclusion (named "Conclusion") that summarises the key points discussed in
           the survey.
-        - A references section (named "References") that lists all the papers cited in
-          the survey, formatted in APA style. This means that the references should be
-          of the form "Author (Year)" or "(Author, Year)", depending on the sentence
+        - A references section (named "## References") that lists all the papers cited
+          in the survey, formatted in APA style. This means that the references should
+          be of the form "Author (Year)" or "(Author, Year)", depending on the sentence
           structure. If there are 2 authors use "Author1 and Author2 (Year)" or
           "(Author1 and Author2, Year)". If there are 3 or more authors use "Author1 et
-          al. (Year)" or "(Author1 et al., Year)". All references in the References
-          section should be separated by double newlines.
-        - In the References section, the papers should be listed in alphabetical order
-          by the surname of the first author, and then by year of publication (earliest
-          first) for papers with the same first author.
-        - All references in the References section must contain the authors, title of
-          the paper, venue and year.
-        - After "## References" there should only be references for the remainder of the
-          literature survey, and nothing else.
+          al. (Year)" or "(Author1 et al., Year)".
 
         Return only the Markdown content of the literature survey, without any
         additional commentary or explanation.
