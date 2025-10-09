@@ -65,6 +65,10 @@ def write_literature_survey(
         additional commentary or explanation.
     """.strip()
 
+    # Remove URLs from the papers, to avoid URLs cluttering the references
+    for paper in relevant_papers:
+        paper.url = ""
+
     papers_str = "\n\n".join(str(paper) for paper in relevant_papers)
     user_prompt = f"""
         Write a literature survey on the topic of {topic!r}, using the following
