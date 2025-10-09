@@ -146,7 +146,7 @@ def parse_pdf(pdf_url: str, verbose: bool) -> str:
 
     # Parse the raw PDF as Markdown
     with (
-        tempfile.NamedTemporaryFile(mode="w+b") as temp_file,
+        tempfile.NamedTemporaryFile(mode="w+b", suffix=".pdf") as temp_file,
         no_terminal_output(disable=verbose),
     ):
         temp_file.write(response.content)
