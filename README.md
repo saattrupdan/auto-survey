@@ -1,13 +1,13 @@
 # AutoSurvey
 
-Automated literature surveys.
+Conduct your literature survey in 10 minutes for $0.05.
 
 ______________________________________________________________________
-[![Code Coverage](https://img.shields.io/badge/Coverage-0%25-red.svg)](https://github.com/alexandrainst/auto_survey/tree/main/tests)
-[![Documentation](https://img.shields.io/badge/docs-passing-green)](https://alexandrainst.github.io/auto_survey)
-[![License](https://img.shields.io/github/license/alexandrainst/auto_survey)](https://github.com/alexandrainst/auto_survey/blob/main/LICENSE)
-[![LastCommit](https://img.shields.io/github/last-commit/alexandrainst/auto_survey)](https://github.com/alexandrainst/auto_survey/commits/main)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](https://github.com/alexandrainst/auto_survey/blob/main/CODE_OF_CONDUCT.md)
+[![Code Coverage](https://img.shields.io/badge/Coverage-0%25-red.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
+[![Documentation](https://img.shields.io/badge/docs-passing-green)](https://saattrupdan.github.io/auto-survey)
+[![License](https://img.shields.io/github/license/saattrupdan/auto-survey)](https://github.com/saattrupdan/auto-survey/blob/main/LICENSE)
+[![LastCommit](https://img.shields.io/github/last-commit/saattrupdan/auto-survey)](https://github.com/saattrupdan/auto-survey/commits/main)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](https://github.com/saattrupdan/auto-survey/blob/main/CODE_OF_CONDUCT.md)
 
 Developer:
 
@@ -18,8 +18,8 @@ Developer:
 ### Get a Semantic Scholar API key
 
 The first thing to do is to [request an API key for Semantic
-Scholar](https://www.semanticscholar.org/product/api#api-key-form). Here are some
-suggested answers for the form:
+Scholar](https://www.semanticscholar.org/product/api#api-key-form). Note that this can
+only be used for research purposes. Here are some suggested answers for the form:
 
 ```text
 > How do you plan to use Semantic Scholar API in your project? (50 words or more)*
