@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - We now check whether `pandoc` and `weasyprint` are installed before attempting to
   convert the generated Markdown survey into PDF, and give an informative error message
   describing how to install these.
+- Sometimes the LLMs add a note at the end of the paper. We have now added to the
+  writing prompt to refrain from doing this. This might still happen, but the
+  probability should be a lot lower now.
 
 ### Fixed
 
