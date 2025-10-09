@@ -49,9 +49,9 @@ from auto_survey.writing import correct_references
             "This is a dummy literature survey that cites some papers.\n\n"
             "There is Author1 (2020) and also the other one (Author2 et al., 2021).\n\n"
             "## References\n\n"
-            "Author1, First (2020). Test-Driven Development. _Journal of Testing_.\n\n"
+            "Author1, First (2020). Test-Driven Development. _Journal Of Testing_.\n\n"
             "Author2, Second and Author3, Third and Author4, Fourth (2021). Another "
-            "Paper. _Conference on Testing_.",
+            "Paper. _Conference On Testing_.",
         )
     ],
     ids=["basic_test_case"],
