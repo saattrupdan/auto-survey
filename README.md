@@ -12,7 +12,7 @@
 ### Conduct your literature survey in 10 minutes for less than a dollar
 
 ______________________________________________________________________
-[![Code Coverage](https://img.shields.io/badge/Coverage-0%25-red.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
+[![Code Coverage](https://img.shields.io/badge/Coverage-45%25-orange.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
 [![License](https://img.shields.io/github/license/saattrupdan/auto-survey)](https://github.com/saattrupdan/auto-survey/blob/main/LICENSE)
 [![LastCommit](https://img.shields.io/github/last-commit/saattrupdan/auto-survey)](https://github.com/saattrupdan/auto-survey/commits/main)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](https://github.com/saattrupdan/auto-survey/blob/main/CODE_OF_CONDUCT.md)
