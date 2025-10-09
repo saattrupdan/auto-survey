@@ -4,8 +4,8 @@
 <div align='center'>
 <img
     src="https://raw.githubusercontent.com/saattrupdan/auto-survey/main/gfx/auto-survey-logo.png"
-    height="312"
-    width="1662"
+    height="216"
+    width="1154"
 >
 </div>
 
