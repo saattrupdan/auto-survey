@@ -86,18 +86,16 @@ def convert_markdown_file_to_pdf(markdown_path: Path, verbose: bool) -> bool:
             f"Running Pandoc to convert the Markdown to PDF at {pdf_path.as_posix()}..."
         )
         with no_terminal_output(disable=verbose):
-            subprocess.run(
-                [
-                    "pandoc",
-                    "--from=markdown",
-                    "--to=pdf",
-                    f"--output={pdf_path}",
-                    "--pdf-engine=weasyprint",
-                ],
-                input=markdown,
-                encoding="utf-8",
-                check=True,
-            )
+            pandoc_command = [
+                "pandoc",
+                "--from=markdown",
+                "--to=pdf",
+                f"--output={pdf_path}",
+                "--pdf-engine=weasyprint",
+            ]
+            if not verbose:
+                pandoc_command.append("--quiet")
+            subprocess.run(pandoc_command, input=markdown, encoding="utf-8", check=True)
     except subprocess.CalledProcessError as e:
         logger.error(
             f"Failed to convert the Markdown to PDF. The error was {e!r}. You can "
