@@ -9,12 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- We now check whether `pandoc` and `pdflatex` are installed before attempting to
-  convert the generated Markdown survey into PDF, and give an informative error message
-  describing how to install these.
+- We now check whether `pandoc` is installed before attempting to convert the generated
+  Markdown survey into PDF, and give an informative error message describing how to
+  install these.
 - We've added a logo now, and hidden many of the logs. These can be shown with the
   `--verbose` flag.
 - Removed URLs from the references in the References section.
+- We now use the WeasyPrint PDF engine when converting the Markdown literature survey to
+  PDF rather than PDFLaTeX, as the latter often had issues with Unicode characters.
 
 ### Fixed
 
@@ -24,11 +26,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   files instead of crashing.
 - We now catch all `httpx.RequestError` during fetching of PDF files, and skip those
   files instead of crashing.
+- We now catch `CalledProcessError` during conversion to PDF, and give an informative
+  error message instead of crashing.
 - We now use `docling>=2.55.0` as errors appeared in earlier versions, as they
   refactored their code base.
-- PDF conversion of the generated Markdown file sometimes failed due to some unicode
-  symbols that were not converted to LaTeX properly. We now use the `pylatexenc` package
-  to handle this.
 
 ## [v0.1.2] - 2025-10-09
 

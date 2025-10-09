@@ -3,18 +3,17 @@
 import logging
 import os
 import re
-import subprocess
 import warnings
 from pathlib import Path
 
 import click
 import litellm
-from pylatexenc.latexencode import unicode_to_latex
 from termcolor import colored
 from tqdm.auto import tqdm
 
 from auto_survey.ascii import ASCII_LOGO
 from auto_survey.data_models import LiteLLMConfig
+from auto_survey.pdf_conversion import convert_markdown_file_to_pdf
 from auto_survey.search import get_all_papers, is_relevant_paper
 from auto_survey.summarisation import summarise_paper
 from auto_survey.writing import write_literature_survey
@@ -148,75 +147,17 @@ def main(
         "relevant to the topic."
     )
 
-    # Write the literature survey to a Markdown file
+    # Write the literature survey
     literature_survey = write_literature_survey(
         topic=topic, relevant_papers=papers, litellm_config=litellm_config
     )
-    markdown_path.write_text(literature_survey)
-
     logger.info("All done! 🎉")
+
+    # Save the literature survey in Markdown format and convert to PDF
+    markdown_path.write_text(literature_survey)
+    convert_markdown_file_to_pdf(markdown_path=markdown_path)
     logger.info(f"Here is the survey in Markdown format: {markdown_path.as_posix()}")
-
-    # Convert the Markdown to PDF using Pandoc
-    pandoc_installed = (
-        subprocess.run(
-            ["pandoc", "--version"], capture_output=True, text=True
-        ).returncode
-        == 0
-    )
-    pdflatex_installed = (
-        subprocess.run(
-            ["pdflatex", "--version"], capture_output=True, text=True
-        ).returncode
-        == 0
-    )
-    if not pandoc_installed and not pdflatex_installed:
-        logger.warning(
-            "We cannot convert the Markdown to PDF because neither Pandoc nor "
-            "pdflatex is installed. Please install both of these and try again. "
-            "Pandoc installation can be found at https://pandoc.org/installing.html "
-            "and PDFLatex installation can be found at "
-            "https://www.latex-project.org/get/. When these are installed, you can "
-            f"convert the Markdown at {markdown_path.as_posix()} to PDF by running "
-            f"`pandoc --from=markdown --to=pdf --output={pdf_path.as_posix()} "
-            f"{markdown_path.as_posix()}` in your terminal."
-        )
-    elif not pandoc_installed:
-        logger.warning(
-            "We cannot convert the Markdown to PDF because Pandoc is not installed. "
-            "Please install Pandoc and try again. Installation instructions can be "
-            "found at https://pandoc.org/installing.html. When Pandoc is installed, "
-            f"you can convert the Markdown at {markdown_path.as_posix()} to PDF by "
-            f"running `pandoc --from=markdown --to=pdf --output={pdf_path.as_posix()} "
-            f"{markdown_path.as_posix()}` in your terminal."
-        )
-    elif not pdflatex_installed:
-        logger.warning(
-            "We cannot convert the Markdown to PDF because pdflatex is not "
-            "installed. Please install pdflatex and try again. Installation "
-            "instructions can be found at https://www.latex-project.org/get/. When "
-            "pdflatex is installed, you can convert the Markdown at "
-            f"{markdown_path.as_posix()} to PDF by running "
-            f"`pandoc --from=markdown --to=pdf --output={pdf_path.as_posix()} "
-            f"{markdown_path.as_posix()}` in your terminal."
-        )
-    else:
-        # Convert unicode symbols in the literature survey to LaTeX commands, since this
-        # is required by Pandoc to convert to PDF with the (default) PDFLaTeX engine
-        literature_survey = unicode_to_latex(
-            s=literature_survey,
-            unknown_char_policy=lambda _: "?",  #  type: ignore[arg-type]
-            unknown_char_warning=False,
-            non_ascii_only=True,
-        )
-
-        subprocess.run(
-            ["pandoc", "--from=markdown", "--to=pdf", f"--output={pdf_path}"],
-            input=literature_survey,
-            encoding="utf-8",
-            check=True,
-        )
-        logger.info(f"Here is the corresponding PDF: {pdf_path.as_posix()}")
+    logger.info(f"Here is the corresponding PDF: {pdf_path.as_posix()}")
 
 
 if __name__ == "__main__":
