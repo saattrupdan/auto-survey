@@ -204,7 +204,10 @@ def main(
         # Convert unicode symbols in the literature survey to LaTeX commands, since this
         # is required by Pandoc to convert to PDF with the (default) PDFLaTeX engine
         literature_survey = unicode_to_latex(
-            literature_survey, unknown_char_policy="replace", unknown_char_warning=False
+            s=literature_survey,
+            unknown_char_policy=lambda _: "?",  #  type: ignore[arg-type]
+            unknown_char_warning=False,
+            non_ascii_only=True,
         )
 
         subprocess.run(
