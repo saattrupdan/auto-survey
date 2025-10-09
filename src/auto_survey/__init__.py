@@ -11,5 +11,3 @@ fmt = colored("%(message)s", "light_yellow")
 logging.basicConfig(level=logging.INFO, format=fmt)
 
 load_dotenv(dotenv_path=".env")
-
-suppress_logging()

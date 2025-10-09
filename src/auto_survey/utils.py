@@ -53,6 +53,6 @@ def suppress_logging() -> None:
         logger
         for logger in logging.root.manager.loggerDict.keys()
         if logger != "auto_survey"
-    ] + ["weasyprint"]
+    ]
     for logging_name in logger_names_to_ignore:
         logging.getLogger(logging_name).setLevel(logging.CRITICAL)
