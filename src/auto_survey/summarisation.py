@@ -47,7 +47,7 @@ def summarise_paper(paper: Paper, topic: str, litellm_config: LiteLLMConfig) -> 
                     f"Retrying in a second..."
                 )
                 sleep(1)
-            except httpx.ConnectError as e:
+            except (httpx.ConnectError, httpx.ConnectTimeout) as e:
                 logging.debug(
                     f"Connection error while trying to fetch PDF from {paper.url}. "
                     f"The error was {e!r}. Retrying in a second..."
