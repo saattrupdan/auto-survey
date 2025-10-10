@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.0] - 2025-10-10
+
 ### Changed
 
 - We now re-create the References section manually, which ensures consistent formatting,
