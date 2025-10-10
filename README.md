@@ -9,7 +9,7 @@
 >
 </div>
 
-### Conduct your literature survey in 10 minutes for less than a dollar
+### Automated literature surveys
 
 ______________________________________________________________________
 [![Code Coverage](https://img.shields.io/badge/Coverage-50%25-orange.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
@@ -72,8 +72,11 @@ searching for properties using the following command:
 uvx auto-survey "<your topic here>"
 ```
 
-This both installs the package and creates the literature survey. All the available
-options are listed below, but you can always get these by running the following command:
+This both installs the package and creates the literature survey, which typically takes
+about 10 minutes. With the default model, it costs about $0.05 per survey.
+
+All the available options are listed below, but you can always get these by running the
+following command:
 
 ```bash
 uvx auto-survey --help
