@@ -66,8 +66,7 @@ OPENAI_API_KEY="<your key here>"
 ### Installing and Running
 
 The easiest way to use the package is as a
-[uv](https://docs.astral.sh/uv/getting-started/installation/) tool. You can simply start
-searching for properties using the following command:
+[uv](https://docs.astral.sh/uv/getting-started/installation/) tool. You can start generating a literature survey using the following command:
 
 ```bash
 uvx auto-survey "<your topic here>"
