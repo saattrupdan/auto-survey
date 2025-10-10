@@ -12,7 +12,7 @@
 ### Automated literature surveys
 
 ______________________________________________________________________
-[![PyPI Status](https://badge.fury.io/py/euroeval.svg)](https://pypi.org/project/auto_survey/)
+[![PyPI Status](https://badge.fury.io/py/auto_survey.svg)](https://pypi.org/project/auto_survey/)
 [![Code Coverage](https://img.shields.io/badge/Coverage-50%25-orange.svg)](https://github.com/saattrupdan/auto-survey/tree/main/tests)
 [![License](https://img.shields.io/github/license/saattrupdan/auto-survey)](https://github.com/saattrupdan/auto-survey/blob/main/LICENSE)
 [![LastCommit](https://img.shields.io/github/last-commit/saattrupdan/auto-survey)](https://github.com/saattrupdan/auto-survey/commits/main)
