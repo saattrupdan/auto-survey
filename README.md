@@ -75,7 +75,7 @@ uvx auto-survey "<your topic here>"
 This both installs the package and creates the literature survey, which typically takes
 about 10 minutes. With the default model, it costs about $0.05 per survey.
 
-All the available options are listed below, but you can always get these by running the
+You can see all the available options by running the
 following command:
 
 ```bash
