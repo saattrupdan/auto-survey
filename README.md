@@ -56,8 +56,8 @@ If you already had a `.env` file, you can just append the line above to it.
 ### Set up an LLM API key
 
 Next, you need to set up an API key for the large language model (LLM) that you want to
-use. The default model is `gpt-4.1-mini` from OpenAI, which requires you to have an OpenAI
-API key, and again add it to your `.env` file:
+use. The default model is `gpt-4.1-mini` from OpenAI, which requires you to have an
+OpenAI API key, and again add it to your `.env` file:
 
 ```bash
 OPENAI_API_KEY="<your key here>"
@@ -66,7 +66,8 @@ OPENAI_API_KEY="<your key here>"
 ### Installing and Running
 
 The easiest way to use the package is as a
-[uv](https://docs.astral.sh/uv/getting-started/installation/) tool. You can start generating a literature survey using the following command:
+[uv](https://docs.astral.sh/uv/getting-started/installation/) tool. You can start
+generating a literature survey using the following command:
 
 ```bash
 uvx auto-survey "<your topic here>"
