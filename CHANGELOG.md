@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed an issue where we would always look for more papers, even when there aren't any
+  relevant ones left. This usually happened if the topic was very niche.
+
 ## [v0.2.0] - 2025-10-10
 
 ### Changed

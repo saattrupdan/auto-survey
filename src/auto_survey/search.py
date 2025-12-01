@@ -48,6 +48,7 @@ def get_all_papers(
 
     offset = 0
     relevant_papers: list[Paper] = list()
+    attempts_left: dict[str, int] = {query: 3 for query in queries}
     with tqdm(
         total=num_relevant_papers,
         desc=colored("Searching for papers", "light_yellow"),
@@ -67,10 +68,20 @@ def get_all_papers(
                 papers = find_papers(query=query, num_results=batch_size, offset=offset)
                 if papers is None:
                     queries.remove(query)
+                    logger.debug(
+                        f"No more results for query {query!r}. Removing it from "
+                        "the list of queries."
+                    )
                     continue
 
                 # Remove already found relevant papers
                 papers = [paper for paper in papers if paper not in relevant_papers]
+                if not papers:
+                    queries.remove(query)
+                    logger.debug(
+                        f"All papers for query {query!r} have already been found. "
+                        "Removing it from the list of queries."
+                    )
 
                 # Check if the papers are relevant, and keep only the relevant ones
                 new_relevant_papers = [
@@ -86,6 +97,15 @@ def get_all_papers(
                         len(new_relevant_papers)
                         - max(len(relevant_papers) - num_relevant_papers, 0)
                     )
+                    attempts_left[query] = 3  # Reset attempts for this query
+                else:
+                    attempts_left[query] -= 1
+                    if attempts_left[query] <= 0:
+                        queries.remove(query)
+                        logger.debug(
+                            f"No relevant papers found for query {query!r} after "
+                            "multiple attempts. Removing it from the list of queries."
+                        )
 
                 # Stop if we have found enough relevant papers
                 if len(relevant_papers) >= num_relevant_papers:
