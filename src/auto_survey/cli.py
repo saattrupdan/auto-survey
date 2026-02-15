@@ -30,7 +30,7 @@ logger = logging.getLogger("auto_survey")
     help="The model ID to use.",
 )
 @click.option(
-    "--base-url",
+    "--api-base",
     type=str,
     default=None,
     show_default=True,
@@ -78,7 +78,7 @@ logger = logging.getLogger("auto_survey")
 def main(
     topic: str,
     model: str,
-    base_url: str | None,
+    api_base: str | None,
     api_key_env_var: str | None,
     num_papers: int,
     num_queries: int,
@@ -100,7 +100,7 @@ def main(
     # Set up LiteLLM configuration to use for all LLM calls
     litellm_config = LiteLLMConfig(
         model=model,
-        base_url=base_url,
+        api_base=api_base,
         api_key=os.getenv(api_key_env_var) if api_key_env_var else None,
     )
 

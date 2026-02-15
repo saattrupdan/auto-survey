@@ -245,7 +245,7 @@ class LiteLLMConfig(BaseModel):
     Attributes:
         model:
             The model ID to use.
-        base_url (optional):
+        api_base (optional):
             The API base URL for the model, if a custom inference server is used. Can be
             None if not needed. Defaults to None.
         api_key (optional):
@@ -254,5 +254,5 @@ class LiteLLMConfig(BaseModel):
     """
 
     model: str
-    base_url: str | None = None
+    api_base: str | None = None
     api_key: str | None = None

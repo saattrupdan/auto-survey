@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Changed the `--base-url` argument to `--api-base`, as this is what's required by
+  LiteLLM.
+
 ## [v0.2.1] - 2025-12-01
 
 ### Fixed
