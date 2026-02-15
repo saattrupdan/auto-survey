@@ -3,6 +3,7 @@
 import logging
 import os
 import time
+import warnings
 
 import httpx
 from termcolor import colored
@@ -236,6 +237,12 @@ def find_papers(query: str, num_results: int, offset: int = 0) -> list["Paper"] 
         httpx.HTTPStatusError:
             If the API returns a non-200 status code.
     """
+    if os.getenv("SEMANTIC_SCHOLAR_API_KEY") is None:
+        warnings.warn(
+            "SEMANTIC_SCHOLAR_API_KEY environment variable is not set.",
+            category=RuntimeWarning,
+        )
+
     while True:
         response = httpx.get(
             url="https://api.semanticscholar.org/graph/v1/paper/search",
