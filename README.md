@@ -33,7 +33,8 @@ only be used for research purposes. Here are some suggested answers for the form
 ```markdown
 > How do you plan to use Semantic Scholar API in your project? (50 words or more)*
 
-Creating literature surveys using the AutoSurvey package.
+Generate literature surveys using large language models with relevant papers in context, using the `auto-survey` Python package. It re-writes the desired research topic into 10 different queries, pings the /paper/search endpoint for each of those for papers, and feeds those papers to a language model to generate a literature survey.
+ It is only for my own private use.
 
 > Which endpoints do you plan to use?
 
