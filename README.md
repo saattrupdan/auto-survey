@@ -66,7 +66,20 @@ OPENAI_API_KEY="<your key here>"
 
 ### Installing and Running
 
-The easiest way to use the package is as a
+Firstly, you need to install the `pandoc` and `weasyprint` packages, which allows for
+generating the final PDFs. You can do this on MacOS using [Homebrew](https://brew.sh/):
+
+```bash
+brew install pandoc weasyprint
+```
+
+On Ubuntu you can install them with `apt`:
+
+```bash
+sudo apt install pandoc weasyprint
+```
+
+Then, the easiest way to use the `auto-survey` package is as a
 [uv](https://docs.astral.sh/uv/getting-started/installation/) tool. You can start
 generating a literature survey using the following command:
 
