@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.2.3] - 2026-02-25
+
 ### Fixed
 
 - The Semantic Scholar API often returns 500 errors seemingly at random, so if it
