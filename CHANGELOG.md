@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- The Semantic Scholar API often returns 500 errors seemingly at random, so if it
+  happens, we wait a second and try again. This is now done for all 5xx errors. If we
+  fail 10 times in a row, we give up and return an empty list.
+
 ## [v0.2.2] - 2026-02-15
 
 ### Fixed

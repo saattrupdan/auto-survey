@@ -243,7 +243,7 @@ def find_papers(query: str, num_results: int, offset: int = 0) -> list["Paper"] 
             category=RuntimeWarning,
         )
 
-    while True:
+    for _ in range(num_attempts := 10):
         response = httpx.get(
             url="https://api.semanticscholar.org/graph/v1/paper/search",
             params=dict(
@@ -276,7 +276,19 @@ def find_papers(query: str, num_results: int, offset: int = 0) -> list["Paper"] 
                 f"Bad request when querying Semantic Scholar API: {response.text}"
             )
             return []
+        elif response.status_code >= 500 and response.status_code < 600:
+            logger.debug(
+                "Internal server error when querying Semantic Scholar API. "
+                "Waiting a second before retrying..."
+            )
+            time.sleep(1)
+            continue
         break
+    else:
+        logger.error(
+            f"Failed to query Semantic Scholar API after {num_attempts} attempts."
+        )
+        return []
     response.raise_for_status()
     results = response.json()
     if results is None:
