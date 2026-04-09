@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v0.2.4] - 2026-04-09
 
+### Changed
+
+- Split up `--model` into `--summarisation-model` and `--writing-model`, as the former
+  can be a lightweight model (defaults to `gpt-4.1-mini`) and the latter should ideally
+  be a more powerful model (defaults to `gpt-4.1`).
+
 ### Fixed
 
 - Improved the identification of references present in the literature survey, which
