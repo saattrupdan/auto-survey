@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Improved the identification of references present in the literature survey, which
+  previously caused errors where mentioned references were removed from the list of
+  references.
+
 ## [v0.2.3] - 2026-02-25
 
 ### Fixed

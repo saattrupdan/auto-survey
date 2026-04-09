@@ -23,22 +23,29 @@ logger = logging.getLogger("auto_survey")
 @click.command()
 @click.argument("topic", type=str, required=True)
 @click.option(
-    "--model",
+    "--summarisation-model",
     type=str,
     default="gpt-4.1-mini",
     show_default=True,
-    help="The model ID to use.",
+    help="The model ID to use for the summarisation of the papers.",
+)
+@click.option(
+    "--writing-model",
+    type=str,
+    default="gpt-4.1",
+    show_default=True,
+    help="The model ID to use for the writing of the literature survey.",
 )
 @click.option(
     "--api-base",
     type=str,
     default=None,
     show_default=True,
-    help="The API base URL for the model, if a custom inference server is used. Can be "
-    "None if not needed.",
+    help="The API base URL for the models, if a custom inference server is used. Can "
+    "be None if not needed.",
 )
 @click.option(
-    "--api-key-env-var", type=str, default=None, help="The API key for the model."
+    "--api-key-env-var", type=str, default=None, help="The API key for the models."
 )
 @click.option(
     "--num-papers",
@@ -77,7 +84,8 @@ logger = logging.getLogger("auto_survey")
 )
 def main(
     topic: str,
-    model: str,
+    summarisation_model: str,
+    writing_model: str,
     api_base: str | None,
     api_key_env_var: str | None,
     num_papers: int,
@@ -98,8 +106,13 @@ def main(
     pdf_path = output_dir / f"{topic_filename}_survey.pdf"
 
     # Set up LiteLLM configuration to use for all LLM calls
-    litellm_config = LiteLLMConfig(
-        model=model,
+    summarisation_config = LiteLLMConfig(
+        model=summarisation_model,
+        api_base=api_base,
+        api_key=os.getenv(api_key_env_var) if api_key_env_var else None,
+    )
+    writing_config = LiteLLMConfig(
+        model=writing_model,
         api_base=api_base,
         api_key=os.getenv(api_key_env_var) if api_key_env_var else None,
     )
@@ -113,7 +126,7 @@ def main(
         num_relevant_papers=num_papers,
         num_queries=num_queries,
         batch_size=search_batch_size,
-        litellm_config=litellm_config,
+        litellm_config=summarisation_config,
     )
 
     # Summarise each paper
@@ -125,7 +138,10 @@ def main(
         colour="yellow",
     ):
         paper.summary = summarise_paper(
-            paper=paper, topic=topic, verbose=verbose, litellm_config=litellm_config
+            paper=paper,
+            topic=topic,
+            verbose=verbose,
+            litellm_config=summarisation_config,
         )
 
     # Check again that the papers are relevant using their summaries rather than
@@ -133,7 +149,9 @@ def main(
     papers = [
         paper
         for paper in papers
-        if is_relevant_paper(paper=paper, topic=topic, litellm_config=litellm_config)
+        if is_relevant_paper(
+            paper=paper, topic=topic, litellm_config=summarisation_config
+        )
     ]
     logger.debug(
         f"After reading the full papers, {len(papers):,} papers continue to be "
@@ -142,7 +160,7 @@ def main(
 
     # Write the literature survey
     literature_survey = write_literature_survey(
-        topic=topic, relevant_papers=papers, litellm_config=litellm_config
+        topic=topic, relevant_papers=papers, litellm_config=writing_config
     )
     logger.info("All done! 🎉")
 

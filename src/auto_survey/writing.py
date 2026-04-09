@@ -52,7 +52,8 @@ def write_literature_survey(
           be of the form "Author (Year)" or "(Author, Year)", depending on the sentence
           structure. If there are 2 authors use "Author1 and Author2 (Year)" or
           "(Author1 and Author2, Year)". If there are 3 or more authors use "Author1 et
-          al. (Year)" or "(Author1 et al., Year)".
+          al. (Year)" or "(Author1 et al., Year)". This is IMPORTANT: follow this format
+          EXACTLY, AT ALL TIMES.
 
         Return only the Markdown content of the literature survey, without any
         additional commentary or explanation.
@@ -110,9 +111,10 @@ def correct_references(literature_survey: str, papers: list[Paper]) -> str:
         citation_in_parens = paper.get_citation(in_parens=True)
         citation_without_any_parens = citation_in_parens[1:-1]
         citation_with_year_in_parens = paper.get_citation(in_parens=False)
-        if (
-            citation_without_any_parens in literature_survey
-            or citation_with_year_in_parens in literature_survey
+        if citation_without_any_parens.replace(",", "") in literature_survey.replace(
+            ",", ""
+        ) or citation_with_year_in_parens.replace(",", "") in literature_survey.replace(
+            ",", ""
         ):
             cited_papers.append(paper)
 
